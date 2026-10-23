@@ -1,0 +1,62 @@
+#!/usr/bin/env php
+<?php
+
+/*
+ * Omnimap in plain PHP: no bundle, no container, no framework. A view of
+ * Kyoto with two markers, described for the browser; its picture made of
+ * tiles (answered here, no network), signed, cut and kept in a directory,
+ * read back and printed as the page's markup; a second making that fetches
+ * nothing (the tiles are cached); Kyoto geocoded twice (the second answer
+ * from the cache). Prints what happened and every class and file PHP
+ * loaded, as JSON.
+ */
+
+use Omnimap\Geocoding\GeocoderPhp;
+use Omnimap\MapHtml;
+use Omnimap\Model\LatLng;
+use Omnimap\Model\MapView;
+use Omnimap\Model\Marker;
+use Omnimap\Signer;
+use Omnimap\Snapshot\DirectoryStorage;
+use Omnimap\Snapshot\Snapshots;
+use Omnimap\Snapshot\SnapshotStore;
+use Omnimap\Testing\ArrayCache;
+use Omnimap\Testing\FixedGeocoder;
+use Omnimap\Testing\PlainTiles;
+use Omnimap\Testing\RecordedHttpClient;
+use Omnimap\Testing\TestTiles;
+
+require getenv('OMNIMAP_AUTOLOAD') ?: '/harness/vendor/autoload.php';
+
+$directory = sys_get_temp_dir().'/omnimap-bare-'.getmypid();
+$http = new RecordedHttpClient(PlainTiles::answer());
+$tiles = new TestTiles($http, new ArrayCache());
+$view = new MapView(new LatLng(35.0116, 135.7681), 12, [new Marker(new LatLng(35.0036, 135.7780), 'Gion'), new Marker(new LatLng(35.0394, 135.7292), 'Kinkaku-ji')], controls: false, id: 'myMap');
+$snapshots = new Snapshots($tiles, new Signer('vNIXE0xscrmjlyV-12Nj_BvUPaw='), new SnapshotStore(new DirectoryStorage($directory), 'maps'), $tiles);
+
+$report['description'] = $tiles->describe($view);
+$report['signature'] = $snapshots->signature($view);
+$report['before'] = null !== $snapshots->find($view);
+$snapshot = $snapshots->findOrMake($view);
+$report['snapshot'] = $snapshot;
+$report['tile-requests'] = count($http->requests);
+$report['user-agent'] = $http->requests[0]['options']['headers']['User-Agent'] ?? null;
+$report['files'] = array_values(array_map(static fn ($f) => substr($f, strlen($directory) + 1), glob($directory.'/maps/*/*') ?: []));
+$report['tile-0'] = getimagesizefromstring((string) $snapshots->store()->tile($report['signature'], 0))[3] ?? null;
+$snapshots->make($view);
+$report['tile-requests-after-remake'] = count($http->requests);
+$report['html'] = (new MapHtml(['src' => '/maps/{signature}/{id}.webp']))->snapshot('myMap', $report['signature'], $snapshot, $tiles->attribution());
+$snapshots->delete($report['signature']);
+$report['after-delete'] = null !== $snapshots->find($view);
+
+$provider = new FixedGeocoder(['Kyoto' => ['lat' => 35.0115754, 'lng' => 135.7681441, 'locality' => 'Kyoto', 'country' => 'Japan', 'countryCode' => 'JP']]);
+$geocoder = new GeocoderPhp($provider, new ArrayCache());
+$report['geocode'] = [$geocoder->geocode('Kyoto')[0]->toArray(), $geocoder->geocode('Kyoto')[0]->label, $provider->calls];
+@rmdir($directory.'/maps');
+@rmdir($directory);
+
+echo json_encode($report + ['loaded' => [
+    'symbols' => [...get_declared_classes(), ...get_declared_interfaces(), ...get_declared_traits()],
+    'files' => array_map('realpath', get_included_files()),
+    'eager' => array_map('realpath', array_values(is_file($f = dirname((string) (new ReflectionClass(Composer\Autoload\ClassLoader::class))->getFileName()).'/autoload_files.php') ? require $f : [])),
+]], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT), "\n";

@@ -1,0 +1,28 @@
+# omniscient/omnimap with every omnimap/* provider:
+#
+#   docker compose run --rm omnimap test       # every package's tests (recorded answers, no network)
+#   docker compose run --rm omnimap bare       # plain PHP: a view described, signed, cached, made of tiles - and what PHP loaded
+#   docker compose run --rm omnimap live       # the checks that reach OpenStreetMap (a few tiles, one Nominatim query), within its policies
+#   docker compose run --rm omnimap phpstan    # PHPStan, each package at the highest level
+#   docker compose down -v                     # the harness's volume gone
+#
+# Providers come from GitHub (branch 1.x) unless their checkout sits under OMNIMAP_PLUGINS (set it
+# to ../.. in .env when this core sits in the workspace beside them): then that checkout is what runs.
+name: omnimap-harness
+
+services:
+  omnimap:
+    build: .
+    image: omniscient/omnimap-harness
+    # One service, no server beside it: Docker's default bridge, no network of its own to create.
+    network_mode: bridge
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - ..:/omnimap/core
+      - ${OMNIMAP_PLUGINS:-./plugins}:/omnimap/plugins:ro
+      - harness:/harness
+
+volumes:
+  harness:

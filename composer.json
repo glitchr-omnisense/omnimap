@@ -1,0 +1,56 @@
+{
+    "name": "omniscient/omnimap",
+    "type": "library",
+    "description": "Omnimap: maps under any PHP host, whoever draws them - one description of a view (centre, zoom, markers) that a provider's driver draws in the browser, the provider's image of it made on the server, geocoding over geocoder-php, and the map cache: the picture of a view, signed, cut in tiles, kept in a storage of the host's and served from it, captured by the browser or made by the server. Providers are packages of their own (omnimap/google, omnimap/openstreetmap); the Symfony and Laravel bridges live in omnibridge.",
+    "keywords": ["map", "maps", "geocoding", "static-map", "tiles", "leaflet", "google-maps", "openstreetmap", "framework-agnostic", "omnimap"],
+    "homepage": "https://github.com/glitchr-studio/omnimap",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marco Meyer",
+            "email": "marco.meyer@glitchr.io"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "psr/simple-cache": "^2.0|^3.0",
+        "symfony/http-client-contracts": "^3.0",
+        "willdurand/geocoder": "^5.0"
+    },
+    "require-dev": {
+        "league/flysystem": "^3.0",
+        "league/flysystem-memory": "^3.0",
+        "phpunit/phpunit": "^11.0",
+        "symfony/cache": "^6.4|^7.0|^8.0",
+        "symfony/http-client": "^6.4|^7.0|^8.0"
+    },
+    "suggest": {
+        "ext-gd": "The map cache: a picture cut in tiles (Snapshot\\SnapshotStore::save()), tiles put together (Static\\TileStitcher)",
+        "league/flysystem": "The map cache in a Flysystem storage (Snapshot\\FlysystemStorage): local, S3, SFTP...",
+        "omnimap/google": "Google Maps: the Maps JavaScript API, Static Maps, geocoding",
+        "omnimap/openstreetmap": "OpenStreetMap: Leaflet over an OSM tile server, images made of its tiles, Nominatim's geocoding",
+        "omniscient/omnibridge": "The host contracts; omnibridge/symfony and omnibridge/laravel wire omnimap into their host"
+    },
+    "autoload": {
+        "psr-4": {
+            "Omnimap\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/",
+            "/docker/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Omnimap\\Tests\\": "Tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-1.x": "1.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
