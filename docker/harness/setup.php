@@ -56,6 +56,7 @@ $composer = [
         'league/flysystem' => '^3.0',
         'league/flysystem-memory' => '^3.0',
         'nyholm/psr7' => '^1.8',
+        'omniscient/omnidrive' => '^1.0@dev',
         'phpstan/phpstan' => '^2.1',
         'phpunit/phpunit' => '^11.0',
         'symfony/cache' => '^7.0|^8.0',

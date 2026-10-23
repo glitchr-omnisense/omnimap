@@ -34,7 +34,8 @@ the picture is kept whole as tile 0.
 
 The storage is an interface of four methods (`Snapshot\Storage`: read, write, exists,
 deleteDirectory): `DirectoryStorage` (a directory), `FlysystemStorage` (any Flysystem operator:
-local, S3...), or the host's own storage contract behind a small adapter.
+local, S3...), `DriveStorage` (an omniscient/omnidrive `Drive`: the storage an application
+names, wherever it is), or the host's own storage contract behind a small adapter.
 
 ## Where pictures come from
 

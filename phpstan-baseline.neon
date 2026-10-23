@@ -145,6 +145,12 @@ parameters:
 			path: Tests/BareTest.php
 
 		-
+			message: '#^Offset 1 might not exist on array\{\}\|array\{non\-falsy\-string, string\}\.$#'
+			identifier: offsetAccess.notFound
+			count: 2
+			path: Tests/DocsTest.php
+
+		-
 			message: '#^Parameter \#1 \$array of function array_values expects array\<T\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1

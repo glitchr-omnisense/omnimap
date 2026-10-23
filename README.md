@@ -42,7 +42,7 @@ echo (new MapHtml())->snapshot('map', $snapshots->signature($view), $snapshots->
   answers turned into `Place`s, kept in a PSR-16 cache, paced.
 - **The map cache** (`Snapshot\*`): the picture of a view, named by the signature of what it
   depends on (`Signer`: HMAC-SHA1, Google's rule), cut in square tiles, kept in a `Storage`
-  (a directory, Flysystem, or the host's own in a few lines), the same for every provider - only
+  (a directory, Flysystem, an omnidrive Drive, or the host's own in a few lines), the same for every provider - only
   the source of the picture differs: the browser's capture of a live map (`Snapshots::save()`,
   `assets/capture.js`), or an image the server makes (`Snapshots::make()`: Static Maps,
   `Static\TileStitcher` over a tile server). See [docs/cache.md](docs/cache.md).
@@ -69,8 +69,8 @@ echo (new MapHtml())->snapshot('map', $snapshots->signature($view), $snapshots->
   the projection (the slippy-map tile of Kyoto at zoom 12); the signer against
   `hash_hmac()` and against geocoder-php's own implementation of Google's URL signing; the cache
   reading a capture glitchr/ux-google wrote (its `metadata.txt` byte for byte, written back
-  identical), cutting, padding with transparency, deleting, in a directory and in Flysystem's
-  memory adapter; images made of tiles (each tile once, the source's headers sent, cached as
+  identical), cutting, padding with transparency, deleting, in a directory, in Flysystem's
+  memory adapter and on an omnidrive Drive; images made of tiles (each tile once, the source's headers sent, cached as
   long as max-age plus stale-while-revalidate, the world repeating across the antimeridian, the
   markers drawn); the geocoder adapter (answers kept, the pace kept); in plain PHP, a view
   described, made, cached, printed and geocoded loading nothing but omnimap and what it requires

@@ -5,7 +5,9 @@ namespace Omnimap\Tests;
 use League\Flysystem\Filesystem;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use Omnimap\Exception\InvalidArgumentException;
+use Omnidrive\Testing\InMemoryDriveFactory;
 use Omnimap\Snapshot\DirectoryStorage;
+use Omnimap\Snapshot\DriveStorage;
 use Omnimap\Snapshot\FlysystemStorage;
 use Omnimap\Snapshot\Snapshot;
 use Omnimap\Snapshot\SnapshotStore;
@@ -38,6 +40,9 @@ final class SnapshotStoreTest extends TestCase
     {
         yield 'a directory' => [static fn () => new DirectoryStorage(self::directory())];
         yield 'Flysystem' => [static fn () => new FlysystemStorage(new Filesystem(new InMemoryFilesystemAdapter()))];
+        if (class_exists(InMemoryDriveFactory::class)) {
+            yield 'an omnidrive Drive' => [static fn () => new DriveStorage((new InMemoryDriveFactory())->create([], 'uploads'))];
+        }
     }
 
     /** @param \Closure(): Storage $storage */

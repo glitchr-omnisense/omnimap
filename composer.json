@@ -20,6 +20,7 @@
     "require-dev": {
         "league/flysystem": "^3.0",
         "league/flysystem-memory": "^3.0",
+        "omniscient/omnidrive": "^1.0@dev",
         "phpunit/phpunit": "^11.0",
         "symfony/cache": "^6.4|^7.0|^8.0",
         "symfony/http-client": "^6.4|^7.0|^8.0"
@@ -29,7 +30,8 @@
         "league/flysystem": "The map cache in a Flysystem storage (Snapshot\\FlysystemStorage): local, S3, SFTP...",
         "omnimap/google": "Google Maps: the Maps JavaScript API, Static Maps, geocoding",
         "omnimap/openstreetmap": "OpenStreetMap: Leaflet over an OSM tile server, images made of its tiles, Nominatim's geocoding",
-        "omniscient/omnibridge": "The host contracts; omnibridge/symfony and omnibridge/laravel wire omnimap into their host"
+        "omniscient/omnibridge": "The host contracts; omnibridge/symfony and omnibridge/laravel wire omnimap into their host",
+        "omniscient/omnidrive": "The map cache on an omnidrive Drive (Snapshot\\DriveStorage): the storage an application names, wherever it is"
     },
     "autoload": {
         "psr-4": {
