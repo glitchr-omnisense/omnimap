@@ -11,7 +11,17 @@ final class DocsTest extends TestCase
     {
         $text = (string) file_get_contents(__DIR__.'/../docs/installation.md');
         self::assertSame(1, preg_match('~```php\n(.*?)```~s', $text, $block));
-        $autoload = \dirname((string) (new \ReflectionClass(\Composer\Autoload\ClassLoader::class))->getFileName(), 2).'/autoload.php';
+        // The autoloader that knows omnimap (not PHPUnit's own, should PHPUnit come as a PHAR).
+        $autoload = null;
+        foreach (\Composer\Autoload\ClassLoader::getRegisteredLoaders() as $vendor => $loader) {
+            if ($loader->findFile(\Omnimap\Testing\TestTiles::class)) {
+                $autoload = $vendor.'/autoload.php';
+                break;
+            }
+        }
+        if (null === $autoload) {
+            self::markTestSkipped('No autoloader knows omnimap.');
+        }
         $code = str_replace("require 'vendor/autoload.php';", 'require '.var_export($autoload, true).';', $block[1], $replaced);
         self::assertSame(1, $replaced);
         $script = (string) tempnam(sys_get_temp_dir(), 'omnimap-docs');

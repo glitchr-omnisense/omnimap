@@ -92,11 +92,20 @@ final class BareTest extends TestCase
         return array_values(array_filter($files, static fn (?string $file) => null !== $file && (!str_starts_with($file, $root) || str_starts_with($file, $root.'vendor/')) && !\in_array(\dirname($file), $eager, true) && !preg_match(self::ALLOWED_FILES, $file)));
     }
 
-    /** The autoloader that knows omnimap and its tests. */
+    /**
+     * The autoloader that knows omnimap and its tests - the package's own or
+     * its harness's: installed in an application, whose vendor/ loads what
+     * the application needs at start, the check says nothing of omnimap.
+     */
     private static function autoload(): string
     {
+        $package = (string) realpath(\dirname(__DIR__));
         foreach (\Composer\Autoload\ClassLoader::getRegisteredLoaders() as $vendor => $loader) {
             if ($loader->findFile(Registry::class) && $loader->findFile(self::class)) {
+                if (str_starts_with($package.'/', (string) realpath($vendor).'/')) {
+                    self::markTestSkipped('omnimap is installed in an application here: the bare check is the package\'s own.');
+                }
+
                 return $vendor.'/autoload.php';
             }
         }

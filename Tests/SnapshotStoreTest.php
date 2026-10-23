@@ -39,13 +39,21 @@ final class SnapshotStoreTest extends TestCase
     public static function storages(): iterable
     {
         yield 'a directory' => [static fn () => new DirectoryStorage(self::directory())];
-        yield 'Flysystem' => [static fn () => new FlysystemStorage(new Filesystem(new InMemoryFilesystemAdapter()))];
-        if (class_exists(InMemoryDriveFactory::class)) {
-            yield 'an omnidrive Drive' => [static fn () => new DriveStorage((new InMemoryDriveFactory())->create([], 'uploads'))];
+        // league/flysystem-memory and omnidrive are this package's development dependencies: an
+        // application that installs omnimap (and runs its tests) may have neither.
+        if (class_exists(InMemoryFilesystemAdapter::class)) {
+            yield 'Flysystem' => [static fn () => new FlysystemStorage(new Filesystem(new InMemoryFilesystemAdapter()))];
+            if (class_exists(InMemoryDriveFactory::class)) {
+                yield 'an omnidrive Drive' => [static fn () => new DriveStorage((new InMemoryDriveFactory())->create([], 'uploads'))];
+            }
         }
     }
 
-    /** @param \Closure(): Storage $storage */
+    /**
+     * @param \Closure(): Storage $storage
+     *
+     * @dataProvider storages
+     */
     #[DataProvider('storages')]
     public function testAPictureIsCutKeptAndDeleted(\Closure $storage): void
     {
@@ -70,12 +78,14 @@ final class SnapshotStoreTest extends TestCase
 
     public function testAWholePicture(): void
     {
-        $store = new SnapshotStore(new FlysystemStorage(new Filesystem(new InMemoryFilesystemAdapter())), '', 'map-{signature}-{id}', 'jpeg');
+        $store = new SnapshotStore(new DirectoryStorage($dir = self::directory()), '', 'map-{signature}-{id}', 'jpeg');
         $snapshot = $store->save('x', self::png(300, 200), null);
 
         self::assertEquals(new Snapshot('x', 300, 200, null, 1, 1), $snapshot);
         self::assertSame('map-x-0.jpeg', $store->tilePath('x', 0));
         self::assertSame(IMAGETYPE_JPEG, getimagesizefromstring((string) $store->tile('x', 0))[2] ?? null);
+        $store->delete('x');
+        self::remove($dir);
     }
 
     public function testOnlyASignatureReachesAPath(): void
