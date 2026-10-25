@@ -3,7 +3,7 @@ title: The browser
 order: 36
 ---
 
-## The browser
+# The browser
 
 Three ES modules, no library, no build step needed (a bundler takes them as they are):
 `assets/omnimap.js` draws a live map with a provider's driver, `assets/snapshot.js` lays a kept
@@ -31,7 +31,7 @@ bindCapture(document, { html2canvas: window.html2canvas });
 
 (the paths are where the host serves the files)
 
-### omnimap.js - a live map
+## omnimap.js - a live map
 
 ```js
 import { register, mountAll } from '.../omnimap/assets/omnimap.js';
@@ -84,7 +84,7 @@ document.addEventListener('omnimap:ready', (event) => {
 });
 ```
 
-### The drivers
+## The drivers
 
 A driver is a module whose default export is `{ draw }`; `draw(element, description, options)`
 returns the map (or a promise of it). The three shipped:
@@ -117,7 +117,7 @@ export default { draw };
 
 (a sketch: `AcmeMaps` stands for the provider's own library)
 
-### snapshot.js - a kept picture
+## snapshot.js - a kept picture
 
 `autoInit()` lays out every `[data-omnimap="snapshot"]` frame once it is near the screen and
 shown, again on resize, and after transparent.js swaps a page in. `initSnapshots(root)`,
@@ -150,7 +150,7 @@ cover the frame (the padding of the last row and column outside), widens the gri
 > `snapshot.js` reads it. A frame with no picture stays empty, and a tile that fails to load stays
 > transparent.
 
-### capture.js - sending a picture to the cache
+## capture.js - sending a picture to the cache
 
 `bindCapture(document, { html2canvas, format: 'png', quality: 1, tilesize: 512 })` binds the
 buttons `MapHtml::button()` prints. omnimap ships no html2canvas: the host gives its own (1.x
@@ -176,7 +176,7 @@ is bound once (`data-omnimap-bound="1"`). The routes that receive the posts are 
 ([Symfony](symfony.md#routes-and-controller)); the server answers a capture with the picture's
 metadata, whose `status` is `OK`.
 
-### Data attributes and events
+## Data attributes and events
 
 | Attribute | On | Set by | Read by |
 |---|---|---|---|

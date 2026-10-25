@@ -3,7 +3,7 @@ title: Configuration reference
 order: 40
 ---
 
-## Configuration reference
+# Configuration reference
 
 Every option below is read from the code at this commit: the factories' `populate()` defaults and
 what their `build()` reads, and the constructors of the core's classes. Options reach a factory
@@ -13,7 +13,7 @@ as an environment variable gives it: `Config::bool()` reads `1`, `true`, `yes`, 
 `Config::int()` and `float()` read numeric strings, and an empty string is "not set" for a string
 option.
 
-### The registry
+## The registry
 
 ```php
 new Registry(iterable $factories, array $config);
@@ -24,7 +24,7 @@ new Registry(iterable $factories, array $config);
 | `$factories` | `ProviderFactoryInterface`s, keyed by their `getName()` (a later one of the same name replaces an earlier one) |
 | `$config` | `array<string, array{factory: string, options?: array}>`: each provider's name, its factory's name, its options |
 
-### omnimap/google
+## omnimap/google
 
 `new GoogleFactory(?HttpClientInterface $http = null, ?Psr\Http\Client\ClientInterface $psr18 = null, ?Psr\SimpleCache\CacheInterface $cache = null)`;
 no required option.
@@ -44,7 +44,7 @@ Static Maps needs the HTTP client; geocoding needs the PSR-18 client and a key (
 `api_key`); both answers are kept in `$cache` when given (geocoding only: Static Maps images are
 not cached by the provider; the map cache keeps the picture).
 
-### omnimap/openstreetmap
+## omnimap/openstreetmap
 
 `new OpenStreetMapFactory(?HttpClientInterface $http = null, ?Psr\Http\Client\ClientInterface $psr18 = null, ?Psr\SimpleCache\CacheInterface $cache = null)`;
 no required option.
@@ -68,7 +68,7 @@ no required option.
 
 The tile host and the Leaflet script's host are the provider's `browserHosts`.
 
-### omnimap/maplibre
+## omnimap/maplibre
 
 `new MapLibreFactory(?HttpClientInterface $http = null)`; no required option. The client is only
 for `MapLibreProvider::inspect()` (reading a style's hosts on the server).
@@ -85,7 +85,7 @@ for `MapLibreProvider::inspect()` (reading a style's hosts on the server).
 | `library_module` | string | `''` | an ES module instead of the script (MapLibre GL JS 6); set, the script and its integrity are left out |
 | `preserve_drawing_buffer` | bool | `true` | keeps the canvas readable for `capture.js` |
 
-### Map cache classes
+## Map cache classes
 
 | Class | Constructor | |
 |---|---|---|
@@ -98,14 +98,14 @@ for `MapLibreProvider::inspect()` (reading a style's hosts on the server).
 | `MapHtml` | `(array $options = [])` | `class` (`omnimap-snapshot`), `suffix` (`_snapshot`), `src` (`/omnimap/{signature}/{id}.webp`), `missing` (`''`) |
 | `MapPrinter` | `(Snapshots $snapshots, MapHtml $html = new MapHtml(), bool $cacheOnly = true, ?\Closure $onError = null)` | [The page](cache.md#the-page-mapprinter) |
 
-### Images and geocoding
+## Images and geocoding
 
 | Class | Constructor | |
 |---|---|---|
 | `Static\TileStitcher` | `(TileSourceInterface $tiles, HttpClientInterface $http, ?CacheInterface $cache = null, string $background = '#aad3df', string $markerColor = '#d33b3b')` | colours as CSS hex (`#rgb` or `#rrggbb`) |
 | `Geocoding\GeocoderPhp` | `(Geocoder\Provider\Provider $provider, ?CacheInterface $cache = null, int $ttl = 2592000, float $interval = 0.0)` | `ttl` in seconds, `interval` the pace in seconds |
 
-### Browser options
+## Browser options
 
 The options of `mountAll()`/`draw()` (`consent`), `bindCapture()` (`html2canvas`, `format`,
 `quality`, `tilesize`, `html2canvasOptions`) and the description's keys are in

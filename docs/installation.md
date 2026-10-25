@@ -3,13 +3,13 @@ title: Installation
 order: 10
 ---
 
-## Installation
+# Installation
 
 ```sh
 composer require omniscient/omnimap omnimap/openstreetmap symfony/http-client
 ```
 
-### Requirements
+## Requirements
 
 - PHP 8.2 or later.
 - `omniscient/omnimap` requires `psr/simple-cache` (^2.0 or ^3.0), `symfony/http-client-contracts`
@@ -29,7 +29,7 @@ The providers require the core, `symfony/http-client-contracts` and, when they g
 (`geocoder-php/google-maps-provider` ^4.7, `geocoder-php/nominatim-provider` ^5.7).
 `omnimap/maplibre` requires the core and `symfony/http-client-contracts` only.
 
-### Plain PHP
+## Plain PHP
 
 GD (`ext-gd`) cuts and makes the pictures. Everything below runs without a network: the tiles
 come from `Omnimap\Testing\TestTiles`, a provider for tests whose tiles a recorded HTTP client
@@ -107,7 +107,7 @@ No key, no network. The pieces:
 No class of a framework, of an HTTP client or of Flysystem is loaded on the way:
 `Tests/BareTest.php` checks it in a process of its own, with `docker/harness/bin/bare`.
 
-### With a real provider
+## With a real provider
 
 The same view drawn live by Leaflet over OpenStreetMap's tiles, and its picture made by the server
 from those tiles. Fetching tiles needs a `user_agent` naming the application and a contact (the
@@ -163,7 +163,7 @@ page then needs `assets/omnimap.js` and `assets/leaflet.js` ([The browser](javas
 for the cached picture, `assets/snapshot.js` and a route that serves the tiles ([The map
 cache](cache.md#serving)).
 
-### In a framework
+## In a framework
 
 - **Symfony**: omnibridge/symfony's `OmnimapExtension` builds the registry, the cache and the
   printer from `config/packages/omnimap.yaml`, routes the cache and gives Twig `omnimap()`:

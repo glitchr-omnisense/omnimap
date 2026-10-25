@@ -3,7 +3,7 @@ title: Symfony
 order: 15
 ---
 
-## Symfony
+# Symfony
 
 The core holds nothing of a framework. In a Symfony application, omnibridge/symfony wires it:
 `Omnibridge\Symfony\Map\DependencyInjection\OmnimapExtension`, registered by
@@ -21,7 +21,7 @@ with `Omnibridge\Symfony\OmnibridgeBundle` in `config/bundles.php`. The Twig fun
 `Omnidrive\Drives` service; geocoding needs a PSR-17 factory (`nyholm/psr7` or
 `php-http/discovery`) for the PSR-18 client.
 
-### omnimap.yaml
+## omnimap.yaml
 
 ```yaml
 # config/packages/omnimap.yaml
@@ -77,7 +77,7 @@ The whole tree, from `Omnibridge\Symfony\Map\DependencyInjection\Configuration`:
 lesringostars keeps glitchr/ux-google's names: `cache.directory: google`, `html: { class:
 google-tilemap, suffix: _html2canvas }`, `routes.tile: { path: '/google/{signature}/{id}.webp' }`.
 
-### Services
+## Services
 
 | Service id | Class | |
 |---|---|---|
@@ -111,7 +111,7 @@ All are autowirable by their class: `public function __construct(private readonl
 >         tags: [omnimap.provider_factory]
 > ```
 
-### Twig functions
+## Twig functions
 
 | Function | |
 |---|---|
@@ -135,7 +135,7 @@ return $this->render('store/show.html.twig', [
 {{ omnimap_suppress(map, {text: 'Delete the picture', class: 'btn'}) }}
 ```
 
-### Routes and controller
+## Routes and controller
 
 `MapRouteLoader` (type `omnimap`) gives four routes, the signature matching `[A-Za-z0-9_-]{1,128}`,
 the tile first (its path may lie under the metadata's):
@@ -165,7 +165,7 @@ The `Access`, `Tokens` and `Urls` services are omnibridge's host contracts
 (`Omnibridge\Contract\*`), which omnibridge/symfony implements over the security component, the
 CSRF token manager and the router. Without an `Access` service, nobody may change the map.
 
-### Testing a Symfony application
+## Testing a Symfony application
 
 The `MapTest` of omnibridge/symfony is a model: replace `http_client` in the test environment with
 a `MockHttpClient` answering the tiles (`Omnimap\Testing\PlainTiles::png()`), point `cache.drive`

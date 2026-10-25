@@ -3,14 +3,14 @@ title: Images made on the server
 order: 32
 ---
 
-## Images made on the server
+# Images made on the server
 
 A static map (`StaticMapInterface`) makes an image of a view on the server: for an e-mail, a PDF,
 a page that must reach no third party, or the [map cache](cache.md), which keeps such an image as
 the view's picture. Two ways exist today: a provider's static map service (Google's Static Maps)
 and tiles put together by `Omnimap\Static\TileStitcher` (OpenStreetMap, any tile source).
 
-### An image
+## An image
 
 ```php
 <?php
@@ -61,7 +61,7 @@ At scale 2 the stitcher took the tiles of zoom 13 for a view at zoom 12, and kep
 max-age plus stale-while-revalidate (91080 + 604800 = 695880 seconds); the second image fetched
 nothing. Google's URL was built without any request: `staticUrl()` is public.
 
-### Tiles put together: TileStitcher
+## Tiles put together: TileStitcher
 
 `new TileStitcher(TileSourceInterface $tiles, HttpClientInterface $http, ?CacheInterface $cache = null, string $background = '#aad3df', string $markerColor = '#d33b3b')`,
 then `image(MapView $view, Size $size, int $scale = 1): Image`:
@@ -91,7 +91,7 @@ then `image(MapView $view, Size $size, int $scale = 1): Image`:
 > below (`0/0/0`): the image shows the wrong part of the world. Leaflet's driver is configured the
 > same way (no `zoomOffset`). 256-pixel sources are not affected.
 
-### Google Static Maps
+## Google Static Maps
 
 `GoogleProvider::image()` fetches `staticUrl($view, $size, $scale)`:
 
@@ -107,7 +107,7 @@ The answer must be 200 and its bytes an image (their media type is read from the
 the `Content-Type`): anything else is a `ProviderException`, a transport failure an
 `UnreachableException`. `Image::$size` is the clamped size times the scale.
 
-### Without an HTTP client
+## Without an HTTP client
 
 A provider built without its HTTP client declares `staticMap` off and its `image()` throws
 `NotSupportedException` before any request. `omnimap/maplibre` makes no image at all: vector

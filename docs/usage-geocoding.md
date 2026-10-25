@@ -3,7 +3,7 @@ title: Geocoding
 order: 33
 ---
 
-## Geocoding
+# Geocoding
 
 A geocoder (`GeocoderInterface`) finds places from an address (`geocode()`) and addresses from a
 point (`reverse()`). omnimap does not read a geocoding API itself: each provider puts one of
@@ -12,7 +12,7 @@ point (`reverse()`). omnimap does not read a geocoding API itself: each provider
 PSR-16 cache and paces the calls. The providers that geocode take a PSR-18 client for
 geocoder-php, beside their Symfony HTTP client.
 
-### Places from an address, an address from a point
+## Places from an address, an address from a point
 
 ```php
 <?php
@@ -70,7 +70,7 @@ The second `geocode('Osaka')` was answered by the cache. The locale given (`ja`)
 instead of the provider's `language`. In production the client is `HttpClient::create()` (or the
 application's) and the cache the application's PSR-16 pool.
 
-### What GeocoderPhp does
+## What GeocoderPhp does
 
 `new GeocoderPhp(Geocoder\Provider\Provider $provider, ?CacheInterface $cache = null, int $ttl = 2592000, float $interval = 0.0)`:
 
@@ -94,7 +94,7 @@ application's) and the cache the application's PSR-16 pool.
 
 `GeocoderPhp::place(Location $location): ?Place` is public: it converts one geocoder-php answer.
 
-### The providers that geocode
+## The providers that geocode
 
 | Provider | geocoder-php provider | Needs | Locale | Pace |
 |---|---|---|---|---|
@@ -106,7 +106,7 @@ Both keep answers for `geocoder_ttl` seconds (30 days) in the cache given to the
 constructor (none: no cache). Without what they need, `capabilities()->geocoder` is `false` and
 `geocode()` / `reverse()` throw `NotSupportedException` before any request.
 
-### A geocoder of one's own choice
+## A geocoder of one's own choice
 
 Any geocoder-php provider can sit behind `GeocoderPhp` (Here, Mapbox, Photon, a chain of several);
 `GeocoderPhp` is not a `GeocoderInterface` itself (it is not a provider: it has no name, no
@@ -125,7 +125,7 @@ $geocoder->geocode('Strasbourg');
 
 (not run: `geocoder-php/photon-provider` is not installed in the harness)
 
-### Terms
+## Terms
 
 Nominatim's policy (https://operations.osmfoundation.org/policies/nominatim/): at most one request
 a second, an identifying User-Agent or Referer, results cached, no autocomplete, no systematic

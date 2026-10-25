@@ -3,7 +3,7 @@ title: Writing a provider
 order: 80
 ---
 
-## Writing a provider
+# Writing a provider
 
 A provider is a package `omnimap/<name>` with a factory and a provider class:
 
@@ -38,7 +38,7 @@ openstreetmap/
   Tests/LiveTest.php            # #[Group('live')]: the real service, excluded by default
 ```
 
-### A whole provider
+## A whole provider
 
 A raster tile service with a key: a renderer, a static map made of its tiles, a tile source. This
 code, with the contract test after it, ran green in the [harness](harness.md) on 2026-10-25 (the
@@ -127,7 +127,7 @@ final class AcmeProvider implements MapRendererInterface, StaticMapInterface, Ti
 The key is in the tile URL the browser reaches: a service whose keys must stay secret is drawn
 from the server's images only (no renderer), or through a proxy route of the host's.
 
-### The conformance suite
+## The conformance suite
 
 `Omnimap\Testing\ProviderContractTests` is what every provider is held to, as PHPUnit tests,
 offline: the provider's test case uses the trait and gives its factory built over the HTTP
@@ -199,7 +199,7 @@ The provider's require-dev holds `phpunit/phpunit` and `symfony/http-client`. Th
 its own `Testing\TestTiles` (`Tests/TestTilesContractTest.php`). Each test and each hook:
 [Testing](testing.md#conformance-suite-each-test).
 
-### Checklist
+## Checklist
 
 - [ ] the factory names the provider (`omnimap.factory_name`, the configuration's `factory`), its
   title, its required options and every default; building calls nothing;

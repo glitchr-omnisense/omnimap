@@ -3,7 +3,7 @@ title: Tiles
 order: 34
 ---
 
-## Tiles
+# Tiles
 
 A tile source (`TileSourceInterface`) gives the square tiles of the Web Mercator grid, one URL
 each: what a browser library draws (Leaflet fills `template()` itself) and what
@@ -41,7 +41,7 @@ https://tile.openstreetmap.org/12/3592/1622.png
 
 (run on 2026-10-25 in the [harness](harness.md); nothing was fetched)
 
-### What a tile source answers
+## What a tile source answers
 
 - `template()`: the URL with `{z}`, `{x}`, `{y}` (and `{s}`, a server's subdomain, when the
   server has several). Leaflet fills it in the browser; the description carries it.
@@ -56,7 +56,7 @@ https://tile.openstreetmap.org/12/3592/1622.png
   `InvalidConfigException`, so that no tile is fetched with a library's default User-Agent (the
   OpenStreetMap Foundation's tile policy blocks those).
 
-### Fetching a tile oneself
+## Fetching a tile oneself
 
 The URLs are plain: any HTTP client fetches them with `headers()`. `TileStitcher` already fetches,
 caches and puts tiles together; fetch one directly only to proxy tiles, and then keep the server's

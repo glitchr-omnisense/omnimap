@@ -3,7 +3,7 @@ title: Laravel
 order: 16
 ---
 
-## Laravel
+# Laravel
 
 omnibridge/laravel wires omnimap into a Laravel application: `Omnibridge\Laravel\Map\MapServiceProvider`,
 registered by `Omnibridge\Laravel\OmnibridgeServiceProvider` when `omniscient/omnimap` is installed,
@@ -16,7 +16,7 @@ the tiles. It routes nothing and gives Twig nothing unless `config/omnimap.php` 
 composer require omnibridge/laravel omniscient/omnimap omnimap/openstreetmap
 ```
 
-### config/omnimap.php
+## config/omnimap.php
 
 ```php
 // config/omnimap.php
@@ -58,7 +58,7 @@ Not read under Laravel: `geocoder`, `cache.pool`, `cache.max_age`, `cache.public
 `cache.public_size` (Symfony's). The PSR-16 cache of tiles and geocoders' answers is a Symfony
 `FilesystemAdapter` (namespace `omnimap`) in `storage/framework/cache/omnimap`.
 
-### Bindings
+## Bindings
 
 | Binding | |
 |---|---|
@@ -83,7 +83,7 @@ Not read under Laravel: `geocoder`, `cache.pool`, `cache.max_age`, `cache.public
 > ));
 > ```
 
-### Routes
+## Routes
 
 Only the tile route is registered: `GET routes.tile.path`, the signature matching
 `[A-Za-z0-9_-]{1,128}` and the id digits, served by `Omnibridge\Laravel\Map\TileController`: the
@@ -124,7 +124,7 @@ which such a route should turn into a 400). The buttons' token is omnibridge/lar
 `SessionTokens::csrf()`: Laravel's session token, the one its CSRF middleware checks on the `web`
 group, the same for every intent - the posts of `capture.js` pass that middleware as they are.
 
-### In a page
+## In a page
 
 With omnibridge/laravel's Twig views, `omnimap()`, `omnimap_export()`, `omnimap_suppress()` and
 `omnimap_signature()` are there as under Symfony ([Twig functions](symfony.md#twig-functions)). In
@@ -138,7 +138,7 @@ a Blade view, print the printer's markup:
 
 The browser side is the same as everywhere ([The browser](javascript.md)).
 
-### Tested
+## Tested
 
 omnibridge/laravel's `Tests/MapTest.php` (Orchestra Testbench): a page's Twig has `omnimap()`; the
 picture is made by the server from OpenStreetMap's tiles (answered by a `MockHttpClient` bound as

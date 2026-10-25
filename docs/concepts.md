@@ -3,9 +3,9 @@ title: Concepts
 order: 20
 ---
 
-## Concepts
+# Concepts
 
-### Providers and capabilities
+## Providers and capabilities
 
 `Omnimap\ProviderInterface` is one map provider, configured. Every provider has:
 
@@ -31,7 +31,7 @@ declares the capability off, and its method throws `NotSupportedException` befor
 The `Registry`'s typed getters check the interface only; `capabilities()` is what to read
 beforehand.
 
-#### Capabilities
+### Capabilities
 
 `Omnimap\Capabilities` is a `final readonly` value, built with named arguments:
 
@@ -49,7 +49,7 @@ beforehand.
 `staticMap`, `geocoder`, `tiles`); `toArray()` gives every property and `contracts`, ready for
 JSON.
 
-### Factories and Config
+## Factories and Config
 
 `Omnimap\ProviderFactoryInterface` builds a provider from options:
 
@@ -94,7 +94,7 @@ The reserved keys:
 | `float(string $key, float $default = 0.0): float` | a numeric value as a float, else `$default` |
 | `bool(string $key): bool` | `true` for `true` and for the strings `1`, `true`, `yes`, `on` (any case, trimmed); `false` otherwise |
 
-### Registry
+## Registry
 
 `Omnimap\Registry` holds the application's providers by name, each built once:
 
@@ -126,9 +126,9 @@ installed (`No "google" factory for the "places" map provider; installed: openst
 `NotSupportedException` (`The "vector" provider (Omnimap\MapLibre\MapLibreProvider) does not
 make a map image.`); it does not look at `capabilities()`.
 
-### The contracts
+## The contracts
 
-#### MapRendererInterface
+### MapRendererInterface
 
 The map in the browser. `describe(MapView $view): array` returns plain, JSON-ready data that the
 page's script draws with the provider's driver: no code, the same for a Twig page, a Laravel view
@@ -145,7 +145,7 @@ puts in it its name, the view's centre, zoom and markers, and what else changes 
 `attribution(): string` is the attribution the map must show, as HTML: printed beside a kept
 picture. It may be empty when the live map shows its own (Google).
 
-#### StaticMapInterface
+### StaticMapInterface
 
 `image(MapView $view, Size $size, int $scale = 1): Image` - a map image made on the server: a
 provider's static map service (Google's Static Maps) or its tiles put together
@@ -153,7 +153,7 @@ provider's static map service (Google's Static Maps) or its tiles put together
 The image is no larger than asked: a provider with a limit (Google: 640 pixels a side at scale 1)
 answers smaller, `Image::$size` says how large.
 
-#### GeocoderInterface
+### GeocoderInterface
 
 `geocode(string $address, ?string $locale = null, int $limit = 5): list<Place>` - places for an
 address, the best first, at most `$limit`; nothing found is an empty list, not an exception.
@@ -161,7 +161,7 @@ address, the best first, at most `$limit`; nothing found is an empty list, not a
 point. `$locale` is the language of the answer (`en`, `ja`), the provider's default when `null`.
 Both go through geocoder-php ([Geocoding](usage-geocoding.md)).
 
-#### TileSourceInterface
+### TileSourceInterface
 
 Square tiles of the Web Mercator grid, one URL each: what Leaflet draws and what `TileStitcher`
 puts together.
@@ -175,14 +175,14 @@ puts together.
 | `attribution(): string` | as HTML |
 | `headers(): array<string, string>` | the headers a request for a tile must carry (a User-Agent naming the application); may throw when they cannot be given |
 
-### Models
+## Models
 
 All models are `final readonly` classes in `Omnimap\Model`. Coordinates are degrees (WGS 84),
 sizes and positions pixels, zooms the Web Mercator zoom every provider shares (0 is the whole
 world in one 256-pixel tile). Every model but `Point` and `Image` implements `JsonSerializable`
 with the same array as its `toArray()`.
 
-#### LatLng
+### LatLng
 
 A point on Earth.
 
@@ -206,7 +206,7 @@ A point on Earth.
 > description the schema refuses. Call `wrapped()` on a longitude that may have gone round the
 > world.
 
-#### Bounds
+### Bounds
 
 A box on the map, from its south-west to its north-east corner. A box across the antimeridian has
 a western longitude greater than its eastern one.
@@ -217,7 +217,7 @@ a western longitude greater than its eastern one.
 | `contains(LatLng $point): bool` | latitude between the corners; longitude compared wrapped, across the antimeridian too |
 | `toArray()` | `['south' => float, 'west' => float, 'north' => float, 'east' => float]` |
 
-#### Size and Point
+### Size and Point
 
 `Size(int $width, int $height)`: pixels, at least 1 each way (`InvalidArgumentException`
 otherwise). `Size::fromString('640x480')` reads `WIDTHxHEIGHT`, `scaled(int $scale)` multiplies
@@ -227,7 +227,7 @@ both sides, `(string)` writes `640x480`, `jsonSerialize()` gives `['width' => ..
 `Point(float $x, float $y)`: a position in pixels, on the whole world at a zoom
 (`Projection\WebMercator`) or on an image.
 
-#### Marker
+### Marker
 
 A pin on the map.
 
@@ -239,7 +239,7 @@ A pin on the map.
 
 `toArray()` gives `['position' => [...], 'title' => ..., 'color' => ...]`.
 
-#### MapView
+### MapView
 
 What a map shows, whoever draws it.
 
@@ -260,7 +260,7 @@ What a map shows, whoever draws it.
 | `options(string $provider): array` | one provider's options (`[]` when none) |
 | `toArray(): array` | `['id', 'center', 'zoom', 'markers', 'controls']`: the `view` of every description; `options` are not in it, each provider puts what it reads of them in its description's `options` |
 
-#### Place and Address
+### Place and Address
 
 A place a geocoder found.
 
@@ -277,12 +277,12 @@ A place a geocoder found.
 `streetNumber`, `streetName`, `postalCode`, `locality`, `subLocality`, `region` (the first
 administrative level), `country` (its name), `countryCode`.
 
-#### Image
+### Image
 
 `Image(string $bytes, string $mimeType, Size $size)`: an image a provider made, its media type as
 the bytes are (`image/png`) and its size in pixels.
 
-### The projection
+## The projection
 
 `Omnimap\Projection\WebMercator` is EPSG:3857, the projection of Google's, OpenStreetMap's and
 nearly every web map's tiles: at zoom z the world is a square of 256 x 2^z pixels, x growing
@@ -299,7 +299,7 @@ eastward from the antimeridian, y southward from latitude 85.0511 (the square's 
 
 The tile holding a point at zoom z is `floor(point->x / 256)`, `floor(point->y / 256)` ([Tiles](usage-tiles.md)).
 
-### The signer
+## The signer
 
 `Omnimap\Signer(?string $secret)` signs with HMAC-SHA1, the secret given in URL-safe base64, the
 signature in URL-safe base64: Google's rule for signing a Maps URL, and the rule
@@ -313,7 +313,7 @@ as ux-google did.
 | `verify(string $payload, string $signature): bool` | constant-time comparison, padding ignored |
 | `Signer::encode(string $bytes)`, `Signer::decode(string $text)` | URL-safe base64 (`-` and `_` for `+` and `/`) |
 
-### The map cache, in short
+## The map cache, in short
 
 `Snapshot\Snapshots` names a view (`signature()`), finds its picture, makes it with a
 `StaticMapInterface` or keeps one the browser captured; `Snapshot\SnapshotStore` cuts and keeps

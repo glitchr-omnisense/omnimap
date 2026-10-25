@@ -3,7 +3,7 @@ title: The Docker harness
 order: 70
 ---
 
-## The Docker harness
+# The Docker harness
 
 `docker/` composes this core and every provider (`docker/harness/plugins.php`) into one
 installation, PHP 8.4 with GD:
@@ -17,7 +17,7 @@ installation, PHP 8.4 with GD:
 Providers come from GitHub (branch 1.x) unless `OMNIMAP_PLUGINS` (in `docker/.env`) points at a
 directory holding their checkouts - `../..` when this core sits in the workspace beside them.
 
-### What it is made of
+## What it is made of
 
 | File | |
 |---|---|
@@ -29,7 +29,7 @@ directory holding their checkouts - `../..` when this core sits in the workspace
 | `docker/entrypoint.sh` | runs `setup.php`, then `composer install` (no `vendor/`) or `composer update` (`composer.json` newer than the lock), then the command |
 | `docker/harness/bin/bare` | the plain-PHP script `Tests/BareTest.php` runs |
 
-### Commands
+## Commands
 
 | Command | |
 |---|---|
@@ -39,7 +39,7 @@ directory holding their checkouts - `../..` when this core sits in the workspace
 | `phpstan` | PHPStan on the core and on each package that has a `phpstan.neon`, at its baseline |
 | `composer ...`, `php ...`, `sh` | as they are, in `/harness` |
 
-### Running a script of one's own
+## Running a script of one's own
 
 The examples of this manual were run this way: put the script in a directory, mount it, and
 require the harness's autoloader.

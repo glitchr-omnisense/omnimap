@@ -3,7 +3,7 @@ title: The map cache
 order: 35
 ---
 
-## The map cache
+# The map cache
 
 A map drawn live costs the visitor a third party's script and tiles - their address sent to
 Google or to a tile server, a consent to ask, a quota spent. The cache shows a **picture** of the
@@ -11,7 +11,7 @@ map instead: made once, kept in the host's storage, served by the host. It is th
 glitchr/ux-google kept for lesringostars, made independent of the provider: the same for Google,
 OpenStreetMap and MapLibre, only the source of the picture differs.
 
-### A whole example
+## A whole example
 
 ```php
 <?php
@@ -76,7 +76,7 @@ NULL
 
 (run on 2026-10-25 in the [harness](harness.md))
 
-### A name per view
+## A name per view
 
 `Snapshots::signature($view)` = `Signer::sign($renderer->fingerprint($view))`: HMAC-SHA1 of what
 the picture depends on, with the host's secret (URL-safe base64, as Google gives its URL signing
@@ -92,7 +92,7 @@ included), so the pictures it captured keep their names.
 A signature is checked before it reaches a storage path: only `[A-Za-z0-9_-]{1,128}` is accepted
 (`InvalidArgumentException` otherwise), so no `/` or `..` gets in.
 
-### The layout in the storage
+## The layout in the storage
 
 `SnapshotStore($storage, $directory, $pattern, $format)`:
 
@@ -139,7 +139,7 @@ deleteDirectory); paths are relative and `/`-separated:
 | `DriveStorage` | `(Omnidrive\Drive $drive)` | an omniscient/omnidrive `Drive`: the storage an application names, wherever it is; needs `omniscient/omnidrive` |
 | the host's own | implements `Storage` | `read()` returns `null` for a missing file, `deleteDirectory()` does nothing for a missing folder |
 
-### Where pictures come from
+## Where pictures come from
 
 - **The browser**: whoever may change the map sees the live map and an export button
   (`MapHtml::button('export', ...)`, `assets/capture.js`): html2canvas draws the element, the
@@ -171,7 +171,7 @@ deleteDirectory); paths are relative and `/`-separated:
 (the bridges allow `control`, `ROLE_ADMIN`, with a CSRF token), since anyone who can post may
 replace the picture of any name.
 
-### The page: MapPrinter
+## The page: MapPrinter
 
 `MapPrinter` decides what a page shows of a view, whatever the host - glitchr/ux-google's rule
 (`cache_only`, `cache_control`), the provider aside:
@@ -195,7 +195,7 @@ A picture the server could not make (a tile server down, a missing `user_agent`)
 for it. Whether the viewer may change the map is the host's to say (omnibridge's Twig extension
 asks its `Access` for `control`).
 
-### The markup: MapHtml
+## The markup: MapHtml
 
 `new MapHtml(array $options = [])`, options `class` (`omnimap-snapshot`), `suffix` (`_snapshot`),
 `src` (`/omnimap/{signature}/{id}.webp`) and `missing` (`''`) - the host's own names where it has
@@ -228,7 +228,7 @@ The element is laid out by `assets/snapshot.js` and its tiles bound by `assets/c
 ([The browser](javascript.md)); give the outer element a size and `position: relative` in CSS so
 that the frame and the attribution band sit in it.
 
-### Serving
+## Serving
 
 The page prints `MapHtml::snapshot($id, $signature, $snapshot, $attribution)`: a frame with the
 picture's size, its grid and the URL template of a tile (`/omnimap/{signature}/{id}.webp` by
@@ -254,7 +254,7 @@ header('Cache-Control: public, max-age=86400');
 echo $bytes;
 ```
 
-### Expiry
+## Expiry
 
 None by time: a picture is kept until it is deleted (`Snapshots::delete()`, the suppress button,
 or a new capture under the same name, which replaces it). A view that changes gets a new name;

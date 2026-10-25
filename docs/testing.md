@@ -3,14 +3,14 @@ title: Testing
 order: 60
 ---
 
-## Testing
+# Testing
 
 Testing an application that shows maps with omnimap, and the conformance suite every provider
 runs. Everything in `Omnimap\Testing` ships with the core (it is autoloaded with it), so a test
 needs no network and no other package; `ProviderContractTests` needs `phpunit/phpunit` and
 `symfony/http-client`, the image helpers GD.
 
-### The fakes
+## The fakes
 
 | Class | |
 |---|---|
@@ -25,7 +25,7 @@ needs no network and no other package; `ProviderContractTests` needs `phpunit/ph
 Symfony's `MockHttpClient` and `MockResponse` work as well wherever a provider takes an HTTP
 client (status codes, transport errors: `new MockResponse('', ['error' => '...'])`).
 
-### An application's test
+## An application's test
 
 ```php
 <?php
@@ -92,14 +92,14 @@ OK (3 tests, 9 assertions)
 
 (run on 2026-10-25 in the [harness](harness.md), PHPUnit 11.5, with `TileServerDownTest` below)
 
-#### A geocoder that knows its answers
+### A geocoder that knows its answers
 
 `GeocoderPhp` is not itself a `GeocoderInterface`; to hand application code a geocoder that
 answers from a list, build `OpenStreetMapProvider` directly with a `GeocoderPhp` over
 `FixedGeocoder`, as the second test does: `capabilities()->geocoder` is `true`, and nothing else
 of the provider is used.
 
-#### A provider on recorded answers
+### A provider on recorded answers
 
 To test the application's handling of a real provider's answers and failures, give its factory a
 `MockHttpClient` (and a `Psr18Client` over it for geocoding), as the third test of the run above:
@@ -133,7 +133,7 @@ A closure makes one response per request: an image needs several tiles. Given a 
 `MockResponse` object instead, the same call ends in Symfony's own `ServerException` (seen in the
 harness), not in the family's `ProviderException`.
 
-#### In a Symfony or Laravel test
+### In a Symfony or Laravel test
 
 Replace the HTTP client the bridge gives the factories: `http_client` in Symfony's test
 environment, or bind `omnimap.http_client` in Laravel, with a `MockHttpClient` answering
@@ -141,7 +141,7 @@ environment, or bind `omnimap.http_client` in Laravel, with a `MockHttpClient` a
 omnibridge/laravel's `Tests/MapTest.php` do exactly that ([Symfony](symfony.md),
 [Laravel](laravel.md)).
 
-### Conformance suite: each test
+## Conformance suite: each test
 
 `Omnimap\Testing\ProviderContractTests` is a PHPUnit trait: a provider's test case uses it and
 gives its factory, built over the HTTP client the suite hands it. No test reaches the network:

@@ -3,7 +3,7 @@ title: Errors
 order: 50
 ---
 
-## Errors
+# Errors
 
 Every exception of the family implements `Omnimap\Exception\OmnimapException` (an interface
 extending `\Throwable`), so one `catch (OmnimapException $e)` takes them all, and each also
@@ -75,7 +75,7 @@ zoom too deep          InvalidArgumentException: A zoom lies between 0 and 24, n
 
 (run on 2026-10-25 in the [harness](harness.md))
 
-### What to catch
+## What to catch
 
 - Around a page's map: nothing. `MapPrinter::map()` catches whatever making a picture throws,
   hands it to its `$onError` and shows no picture (the bridges log it as a warning).
@@ -87,7 +87,7 @@ zoom too deep          InvalidArgumentException: A zoom lies between 0 and 24, n
   `ProviderException`s, a transport failure an `UnreachableException` ([Testing](testing.md)).
 - A 429's `Retry-After` is not read: `ProviderException` carries no retry delay.
 
-### Outside the family
+## Outside the family
 
 Three throws are not `OmnimapException`s:
 

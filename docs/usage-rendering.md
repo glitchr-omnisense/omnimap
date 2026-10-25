@@ -3,14 +3,14 @@ title: A live map in the browser
 order: 31
 ---
 
-## A live map in the browser
+# A live map in the browser
 
 A renderer (`MapRendererInterface`) turns a `MapView` into a description; the page carries it in a
 `data-` attribute; `assets/omnimap.js` reads it and hands it to the provider's driver, which loads
 the provider's library and draws the map once the visitor's consent allows it. PHP sends no code
 to the browser and calls nothing: describing a view is plain data.
 
-### Describing a view
+## Describing a view
 
 ```php
 <?php
@@ -96,7 +96,7 @@ The same view went to two providers: each read its own options (`openstreetmap`'
 `maplibre`'s `map`) and ignored the other's. No factory was given an HTTP client: describing
 needs none.
 
-### The description
+## The description
 
 What every renderer returns, as `schema/map-description.schema.json` (JSON Schema 2020-12) defines
 it; `Tests/MapDescriptionSchemaTest.php` checks every installed renderer's description against it.
@@ -121,7 +121,7 @@ Each provider's keys:
 | `openstreetmap` | `script`, `scriptIntegrity`, `style`, `styleIntegrity` (Leaflet; the empty ones left out) | `tiles`: `template`, `maxZoom`, `tileSize`, `attribution` | `map` (object, `{}`) | the `attribution` option |
 | `maplibre` | `script`, `scriptIntegrity`, `style`, `styleIntegrity`; or `module`, `style`, `styleIntegrity` when `library_module` is set | `style`: the style's URL | `map` (object, `{}`), `preserveDrawingBuffer` (bool) | the `attribution` option |
 
-### A view's options of one provider
+## A view's options of one provider
 
 `MapView::$options` holds, under a provider's name, what only that provider understands; each
 renderer reads its own and ignores the others. What each reads:
@@ -137,7 +137,7 @@ renderer reads its own and ignores the others. What each reads:
 Google's Static Maps also reads `styles`: the rules of the `zoomStyles.default` style (the first
 style when there is no default) are sent as `style=` parameters ([Images](usage-static.md)).
 
-### Printing it
+## Printing it
 
 `MapHtml::live(string $id, array $description): string` prints
 `<div id="..." data-omnimap="map" data-omnimap-description="...">`: the description as JSON
@@ -148,7 +148,7 @@ height in CSS. `mountAll()` then draws every such element under a root
 In Symfony and Laravel, the Twig function `omnimap(view)` prints it (or the cached picture, see
 [The map cache](cache.md#the-page-mapprinter)).
 
-### Consent
+## Consent
 
 A live map loads a third party's script and tiles from the visitor's browser: the hosts are in
 `capabilities()->browserHosts` (for a consent banner and a Content-Security-Policy), and the
@@ -157,7 +157,7 @@ description's `consent` as feature. Without a gate, the map loads at once. omnib
 `Consent.use('MAP', {}, load)` is one such gate. A page that must reach no third party at all
 shows the cached picture instead ([The map cache](cache.md)).
 
-### The fingerprint
+## The fingerprint
 
 `fingerprint(MapView)` is the text a picture of the view is named after, once signed. What each
 provider puts in it:

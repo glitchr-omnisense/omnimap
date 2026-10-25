@@ -3,9 +3,9 @@ title: Verified, and not
 order: 90
 ---
 
-## Verified, and not
+# Verified, and not
 
-### What the tests prove
+## What the tests prove
 
 Run on 2026-10-25 in the [harness](harness.md), the core and its three providers from their
 checkouts, PHP 8.4.26 with GD, PHPUnit 11.5.57: 92 tests, 568 assertions, green (the `live` group
@@ -42,7 +42,7 @@ The capability table of the [index](index.md#providers) was probed with `capabil
 2026-10-25. Every example of this manual marked "run" was run in the harness on 2026-10-25 and
 its output pasted as it came.
 
-### Verified live
+## Verified live
 
 - `docker compose run --rm omnimap live`, 2026-10-23: an image of Kyoto made of
   tile.openstreetmap.org's tiles and one Nominatim query, with omnimap/openstreetmap's
@@ -55,7 +55,7 @@ its output pasted as it came.
   page's map made by the server and kept, no request to Google nor to the tile server from the
   visitor's browser (headless Chrome).
 
-### What is not verified
+## What is not verified
 
 - The core's JavaScript (`omnimap.js`, `snapshot.js`, `capture.js`) and the Google and Leaflet
   drivers have no test of their own; only `maplibre.js` was drawn in a browser.
@@ -75,7 +75,7 @@ outside -180..180 in a description ([Concepts](concepts.md#latlng)), 512-pixel t
 bridges ([Symfony](symfony.md#services), [Laravel](laravel.md#bindings)), two exceptions outside
 the family ([Errors](errors.md#outside-the-family)).
 
-### Responsibility
+## Responsibility
 
 omniscient/omnimap and its omnimap/* providers are unofficial clients, affiliated with none of
 the services they reach. The MIT licence covers the code only and grants no right to any service
