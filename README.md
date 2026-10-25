@@ -53,7 +53,10 @@ echo (new MapHtml())->snapshot('map', $snapshots->signature($view), $snapshots->
   provider's driver (shipped by the provider package) behind a consent gate; `snapshot.js` lays
   a kept picture's tiles out; `capture.js` sends a live map's picture to the cache.
 - **Providers** are packages: [omnimap/google](https://github.com/glitchr-studio/omnimap-google),
-  [omnimap/openstreetmap](https://github.com/glitchr-studio/omnimap-openstreetmap).
+  [omnimap/openstreetmap](https://github.com/glitchr-studio/omnimap-openstreetmap),
+  [omnimap/maplibre](https://github.com/glitchr-studio/omnimap-maplibre) (vector styles drawn by
+  MapLibre GL JS, OpenFreeMap's by default). A new one starts from
+  [glitchr-studio/omni-provider-template](https://github.com/glitchr-studio/omni-provider-template).
 - **Hosts**: omnibridge/symfony (`Omnibridge\Symfony\Map`) and omnibridge/laravel
   (`Omnibridge\Laravel\Map`) wire it - configuration, services, the cache's routes, Twig
   functions. Nothing of a framework here.

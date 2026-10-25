@@ -7,4 +7,5 @@
 return [
     'google' => ['Omnimap\\Google\\Tests\\'],
     'openstreetmap' => ['Omnimap\\OpenStreetMap\\Tests\\'],
+    'maplibre' => ['Omnimap\\MapLibre\\Tests\\'],
 ];

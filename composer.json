@@ -32,6 +32,7 @@
         "league/flysystem": "The map cache in a Flysystem storage (Snapshot\\FlysystemStorage): local, S3, SFTP...",
         "phpunit/phpunit": "The conformance suite a provider runs (Testing\\ProviderContractTests), with symfony/http-client",
         "omnimap/google": "Google Maps: the Maps JavaScript API, Static Maps, geocoding",
+        "omnimap/maplibre": "MapLibre: vector styles drawn by MapLibre GL JS in the browser (OpenFreeMap's by default, no key)",
         "omnimap/openstreetmap": "OpenStreetMap: Leaflet over an OSM tile server, images made of its tiles, Nominatim's geocoding",
         "omniscient/omnibridge": "The host contracts; omnibridge/symfony and omnibridge/laravel wire omnimap into their host",
         "omniscient/omnidrive": "The map cache on an omnidrive Drive (Snapshot\\DriveStorage): the storage an application names, wherever it is"
