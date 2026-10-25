@@ -41,7 +41,7 @@ final class TestTiles implements MapRendererInterface, StaticMapInterface, TileS
 
     public function describe(MapView $view): array
     {
-        return ['provider' => 'test', 'view' => $view->toArray(), 'tiles' => ['template' => $this->template()], 'attribution' => $this->attribution()];
+        return ['provider' => 'test', 'consent' => 'MAP', 'view' => $view->toArray(), 'tiles' => ['template' => $this->template()], 'attribution' => $this->attribution()];
     }
 
     public function fingerprint(MapView $view): string

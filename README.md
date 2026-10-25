@@ -74,7 +74,9 @@ echo (new MapHtml())->snapshot('map', $snapshots->signature($view), $snapshots->
   long as max-age plus stale-while-revalidate, the world repeating across the antimeridian, the
   markers drawn); the geocoder adapter (answers kept, the pace kept); in plain PHP, a view
   described, made, cached, printed and geocoded loading nothing but omnimap and what it requires
-  (`BareTest`).
+  (`BareTest`); the conformance suite (`Testing\ProviderContractTests`, see
+  [docs/providers.md](docs/providers.md#the-conformance-suite)) on the core's test provider, on
+  omnimap/openstreetmap and on omnimap/google, offline.
 - Verified live (`docker compose run --rm omnimap live`, 2026-10-23): an image of Kyoto made of
   tile.openstreetmap.org's tiles and one Nominatim query, with this package's User-Agent.
 - Not verified here: the JavaScript in a browser;

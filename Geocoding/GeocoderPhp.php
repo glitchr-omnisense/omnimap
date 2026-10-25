@@ -8,6 +8,7 @@ use Geocoder\Provider\Provider;
 use Geocoder\Query\GeocodeQuery;
 use Geocoder\Query\ReverseQuery;
 use Omnimap\Exception\ProviderException;
+use Omnimap\Exception\UnreachableException;
 use Omnimap\Model\Address;
 use Omnimap\Model\Bounds;
 use Omnimap\Model\LatLng;
@@ -70,8 +71,13 @@ final class GeocoderPhp
         }
         try {
             $locations = $call();
-        } catch (GeocoderException $e) {
+        } catch (\Psr\Http\Client\NetworkExceptionInterface $e) {
+            throw new UnreachableException(\sprintf('%s could not be reached for "%s": %s', $this->provider->getName(), $question, $e->getMessage()), 0, $e);
+        } catch (GeocoderException|\Psr\Http\Client\ClientExceptionInterface $e) {
             throw new ProviderException(\sprintf('%s could not answer "%s": %s', $this->provider->getName(), $question, $e->getMessage()), 0, $e);
+        } catch (\TypeError|\ValueError|\JsonException $e) {
+            // geocoder-php's providers read the body as the shape they expect: anything else is an answer, not a bug of the caller's.
+            throw new ProviderException(\sprintf('%s answered "%s" with something it could not read: %s', $this->provider->getName(), $question, $e->getMessage()), 0, $e);
         } finally {
             $this->last = microtime(true);
         }

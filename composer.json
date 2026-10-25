@@ -28,6 +28,7 @@
     "suggest": {
         "ext-gd": "The map cache: a picture cut in tiles (Snapshot\\SnapshotStore::save()), tiles put together (Static\\TileStitcher)",
         "league/flysystem": "The map cache in a Flysystem storage (Snapshot\\FlysystemStorage): local, S3, SFTP...",
+        "phpunit/phpunit": "The conformance suite a provider runs (Testing\\ProviderContractTests), with symfony/http-client",
         "omnimap/google": "Google Maps: the Maps JavaScript API, Static Maps, geocoding",
         "omnimap/openstreetmap": "OpenStreetMap: Leaflet over an OSM tile server, images made of its tiles, Nominatim's geocoding",
         "omniscient/omnibridge": "The host contracts; omnibridge/symfony and omnibridge/laravel wire omnimap into their host",

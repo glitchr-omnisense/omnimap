@@ -110,14 +110,17 @@ final class TileStitcher
             }
         }
         foreach ($responses as $url => $response) {
+            unset($responses[$url]);
             try {
                 $status = $response->getStatusCode();
                 if (200 !== $status) {
+                    self::cancel($responses);
                     throw ProviderException::answered($this->tiles->getTitle(), $url, $status);
                 }
                 $bytes = $response->getContent();
                 $headers = $response->getHeaders();
             } catch (HttpException $e) {
+                self::cancel($responses);
                 throw new UnreachableException(\sprintf('%s could not be reached for %s: %s', $this->tiles->getTitle(), $url, $e->getMessage()), 0, $e);
             }
             $this->cache?->set(self::key($url), $bytes, self::lifetime($headers['cache-control'][0] ?? ''));
@@ -170,5 +173,18 @@ final class TileStitcher
     private static function key(string $url): string
     {
         return 'omnimap.tile.'.sha1($url);
+    }
+
+    /**
+     * The tiles still on their way, dropped: once one failed the image is not made, and a
+     * response left unread would throw again when destroyed.
+     *
+     * @param array<string, \Symfony\Contracts\HttpClient\ResponseInterface> $responses
+     */
+    private static function cancel(array $responses): void
+    {
+        foreach ($responses as $response) {
+            $response->cancel();
+        }
     }
 }
