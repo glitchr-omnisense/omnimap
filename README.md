@@ -63,11 +63,21 @@ echo (new MapHtml())->snapshot('map', $snapshots->signature($view), $snapshots->
 
 ## Documentation
 
+The manual, in `docs/` (one page on the omniscient site):
+
+- [Overview and providers](docs/index.md)
 - [Installation, in plain PHP](docs/installation.md) (run as written by the tests)
+- [Symfony](docs/symfony.md) and [Laravel](docs/laravel.md): the omnibridge wiring
+- [Concepts](docs/concepts.md): contracts, capabilities, registry, models, projection, signer
+- Usage: [a live map](docs/usage-rendering.md), [images made on the server](docs/usage-static.md),
+  [geocoding](docs/usage-geocoding.md), [tiles](docs/usage-tiles.md)
 - [The map cache](docs/cache.md): names, storage layout, serving, expiry, capture
-- [The browser](docs/javascript.md): drivers, consent, snapshots, capture
-- [Writing a provider](docs/providers.md)
+- [The browser](docs/javascript.md): drivers, consent, snapshots, capture, data attributes, events
+- [Configuration reference](docs/configuration.md), [Errors](docs/errors.md)
+- [Testing](docs/testing.md): the fakes, the conformance suite test by test
 - [The harness](docs/harness.md)
+- [Writing a provider](docs/providers.md)
+- [Verified, and not](docs/verified.md)
 
 ## Verified, and not
 
