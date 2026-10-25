@@ -46,6 +46,9 @@ echo (new MapHtml())->snapshot('map', $snapshots->signature($view), $snapshots->
   the source of the picture differs: the browser's capture of a live map (`Snapshots::save()`,
   `assets/capture.js`), or an image the server makes (`Snapshots::make()`: Static Maps,
   `Static\TileStitcher` over a tile server). See [docs/cache.md](docs/cache.md).
+- **The description's schema** (`schema/map-description.schema.json`, JSON Schema 2020-12): what
+  `describe()` gives and a driver reads - the envelope every provider holds to (its name, the consent,
+  the view, the attribution), its own keys beside it; every renderer's description is checked against it.
 - **The browser** (`assets/`, ES modules, no library): `omnimap.js` draws a description with the
   provider's driver (shipped by the provider package) behind a consent gate; `snapshot.js` lays
   a kept picture's tiles out; `capture.js` sends a live map's picture to the cache.
@@ -74,7 +77,8 @@ echo (new MapHtml())->snapshot('map', $snapshots->signature($view), $snapshots->
   long as max-age plus stale-while-revalidate, the world repeating across the antimeridian, the
   markers drawn); the geocoder adapter (answers kept, the pace kept); in plain PHP, a view
   described, made, cached, printed and geocoded loading nothing but omnimap and what it requires
-  (`BareTest`); the conformance suite (`Testing\ProviderContractTests`, see
+  (`BareTest`); every renderer's description against `schema/map-description.schema.json`
+  (opis/json-schema); the conformance suite (`Testing\ProviderContractTests`, see
   [docs/providers.md](docs/providers.md#the-conformance-suite)) on the core's test provider, on
   omnimap/openstreetmap and on omnimap/google, offline.
 - Verified live (`docker compose run --rm omnimap live`, 2026-10-23): an image of Kyoto made of

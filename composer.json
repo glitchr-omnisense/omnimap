@@ -21,6 +21,7 @@
         "league/flysystem": "^3.0",
         "league/flysystem-memory": "^3.0",
         "omniscient/omnidrive": "^1.0@dev",
+        "opis/json-schema": "^2.3",
         "phpunit/phpunit": "^11.0",
         "psr/http-client": "^1.0",
         "symfony/cache": "^6.4|^7.0|^8.0",

@@ -1,6 +1,7 @@
 /**
  * omnimap in the browser: draws the description a provider's renderer gave
- * (Omnimap\MapRendererInterface::describe()) with that provider's driver -
+ * (Omnimap\MapRendererInterface::describe(), whose shape schema/map-description.schema.json
+ * gives) with that provider's driver -
  * framework-free, an ES module: a Twig page, a Laravel view and a React
  * component use it alike.
  *

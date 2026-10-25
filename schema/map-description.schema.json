@@ -1,0 +1,69 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/glitchr-studio/omnimap/1.x/schema/map-description.schema.json",
+    "title": "omnimap map description",
+    "description": "What Omnimap\\MapRendererInterface::describe() returns (PHP) and a driver's draw(element, description, options) reads (assets/omnimap.js and each provider's assets/<name>.js): the common envelope every provider gives, its own keys beside it.",
+    "type": "object",
+    "required": ["provider", "consent", "view", "attribution"],
+    "properties": {
+        "provider": {
+            "description": "The provider's name: the driver omnimap.js picks (register(name, driver)).",
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_-]*$"
+        },
+        "consent": {
+            "description": "The consent feature the map waits for before reaching a third party (MAP).",
+            "type": "string",
+            "minLength": 1
+        },
+        "view": {"$ref": "#/$defs/view"},
+        "attribution": {
+            "description": "HTML shown beside a kept picture of the map; may be empty when the live map shows its own.",
+            "type": "string"
+        },
+        "library": {
+            "description": "Where the browser loads the provider's library: script, style, module, their integrity, a key.",
+            "type": "object",
+            "additionalProperties": {"type": "string"}
+        },
+        "options": {
+            "description": "The provider's options for its library, from MapView::options(<provider>).",
+            "type": "object"
+        }
+    },
+    "additionalProperties": true,
+    "$defs": {
+        "latLng": {
+            "type": "object",
+            "required": ["lat", "lng"],
+            "properties": {
+                "lat": {"type": "number", "minimum": -90, "maximum": 90},
+                "lng": {"type": "number", "minimum": -180, "maximum": 180}
+            },
+            "additionalProperties": false
+        },
+        "marker": {
+            "type": "object",
+            "required": ["position", "title", "color"],
+            "properties": {
+                "position": {"$ref": "#/$defs/latLng"},
+                "title": {"type": ["string", "null"]},
+                "color": {"type": ["string", "null"]}
+            },
+            "additionalProperties": false
+        },
+        "view": {
+            "description": "Omnimap\\Model\\MapView::toArray().",
+            "type": "object",
+            "required": ["id", "center", "zoom", "markers", "controls"],
+            "properties": {
+                "id": {"type": "string", "minLength": 1},
+                "center": {"$ref": "#/$defs/latLng"},
+                "zoom": {"type": "integer", "minimum": 0, "maximum": 24},
+                "markers": {"type": "array", "items": {"$ref": "#/$defs/marker"}},
+                "controls": {"type": "boolean"}
+            },
+            "additionalProperties": false
+        }
+    }
+}
