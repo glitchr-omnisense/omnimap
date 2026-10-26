@@ -82,6 +82,6 @@ final class TestTiles implements MapRendererInterface, StaticMapInterface, TileS
     /** @return array<string, string> */
     public function headers(): array
     {
-        return ['User-Agent' => 'omnimap-tests/1.0 (+https://github.com/glitchr-studio/omnimap)'];
+        return ['User-Agent' => 'omnimap-tests/1.0 (+https://github.com/glitchr-omnisense/omnimap)'];
     }
 }

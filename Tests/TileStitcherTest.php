@@ -29,7 +29,7 @@ final class TileStitcherTest extends TestCase
         $urls = array_column($http->requests, 'url');
         self::assertCount(\count(array_unique($urls)), $urls, 'each tile once');
         self::assertContains('https://tiles.example/12/3592/1622.png', $urls, 'the tile under the centre');
-        self::assertSame(['User-Agent' => 'omnimap-tests/1.0 (+https://github.com/glitchr-studio/omnimap)'], $http->requests[0]['options']['headers']);
+        self::assertSame(['User-Agent' => 'omnimap-tests/1.0 (+https://github.com/glitchr-omnisense/omnimap)'], $http->requests[0]['options']['headers']);
         self::assertSame([695880], array_values(array_unique($cache->ttls)), 'max-age plus stale-while-revalidate');
 
         $before = \count($http->requests);

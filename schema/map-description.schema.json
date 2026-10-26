@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/glitchr-studio/omnimap/1.x/schema/map-description.schema.json",
+    "$id": "https://raw.githubusercontent.com/glitchr-omnisense/omnimap/1.x/schema/map-description.schema.json",
     "title": "omnimap map description",
     "description": "What Omnimap\\MapRendererInterface::describe() returns (PHP) and a driver's draw(element, description, options) reads (assets/omnimap.js and each provider's assets/<name>.js): the common envelope every provider gives, its own keys beside it.",
     "type": "object",

@@ -14,7 +14,7 @@ needs no network and no other package; `ProviderContractTests` needs `phpunit/ph
 
 | Class | |
 |---|---|
-| `TestTiles(HttpClientInterface $http, ?CacheInterface $cache = null)` | a provider (name `test`, title `Test tiles`): a renderer, a static map (through `TileStitcher`) and a tile source on `https://tiles.example/{z}/{x}/{y}.png`, browser host `tiles.example`, attribution `&copy; Test tiles`, User-Agent `omnimap-tests/1.0 (+https://github.com/glitchr-studio/omnimap)`; no factory |
+| `TestTiles(HttpClientInterface $http, ?CacheInterface $cache = null)` | a provider (name `test`, title `Test tiles`): a renderer, a static map (through `TileStitcher`) and a tile source on `https://tiles.example/{z}/{x}/{y}.png`, browser host `tiles.example`, attribution `&copy; Test tiles`, User-Agent `omnimap-tests/1.0 (+https://github.com/glitchr-omnisense/omnimap)`; no factory |
 | `PlainTiles::png(int $zoom, int $x, int $y, int $size = 256): string` | a PNG tile of one colour per zoom, x and y, its coordinates written on it |
 | `PlainTiles::answer(): \Closure` | the answer `RecordedHttpClient` gives for any URL ending in `/{z}/{x}/{y}.png`: that tile, with `Cache-Control: max-age=91080, stale-while-revalidate=604800, stale-if-error=604800`; a 404 otherwise |
 | `RecordedHttpClient(\Closure $answer)` | a Symfony HTTP client answering from a closure of the method, the URL and the options, returning `[status, body, headers]`; every request kept in `$requests` (`method`, `url`, `options`); `stream()` is not supported |

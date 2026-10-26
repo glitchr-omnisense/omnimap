@@ -7,17 +7,17 @@ order: 15
 
 The core holds nothing of a framework. In a Symfony application, omnibridge/symfony wires it:
 `Omnibridge\Symfony\Map\DependencyInjection\OmnimapExtension`, registered by
-`Omnibridge\Symfony\OmnibridgeBundle` when `omniscient/omnimap` is installed, builds the providers,
+`Omnibridge\Symfony\OmnibridgeBundle` when `omnisense/omnimap` is installed, builds the providers,
 the registry, the map cache and the printer from `config/packages/omnimap.yaml`; omnibridge/twig's
 `Omnibridge\Twig\MapExtension` gives Twig `omnimap()`; a route loader and a controller serve the
 cache. Without an `omnimap.yaml`, the extension loads nothing.
 
 ```sh
-composer require omnibridge/symfony omniscient/omnimap omnimap/openstreetmap
+composer require omnibridge/symfony omnisense/omnimap omnimap/openstreetmap
 ```
 
 with `Omnibridge\Symfony\OmnibridgeBundle` in `config/bundles.php`. The Twig functions need
-`omnibridge/twig` and TwigBundle; `cache.drive` needs `omniscient/omnidrive` and the bridge's
+`omnibridge/twig` and TwigBundle; `cache.drive` needs `omnisense/omnidrive` and the bridge's
 `Omnidrive\Drives` service; geocoding needs a PSR-17 factory (`nyholm/psr7` or
 `php-http/discovery`) for the PSR-18 client.
 

@@ -10,7 +10,7 @@ Three ES modules, no library, no build step needed (a bundler takes them as they
 picture's tiles out, `assets/capture.js` sends a live map's picture to the cache. Each provider
 package ships its driver: `omnimap/google`'s `assets/google.js`, `omnimap/openstreetmap`'s
 `assets/leaflet.js`, `omnimap/maplibre`'s `assets/maplibre.js`. Installed with Composer, they sit
-under `vendor/omniscient/omnimap/assets/` and `vendor/omnimap/<provider>/assets/`: copy them to
+under `vendor/omnisense/omnimap/assets/` and `vendor/omnimap/<provider>/assets/`: copy them to
 the public folder, map them in an import map, or let the application's bundler take them.
 
 ```js

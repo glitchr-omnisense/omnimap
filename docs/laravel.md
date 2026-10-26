@@ -6,14 +6,14 @@ order: 16
 # Laravel
 
 omnibridge/laravel wires omnimap into a Laravel application: `Omnibridge\Laravel\Map\MapServiceProvider`,
-registered by `Omnibridge\Laravel\OmnibridgeServiceProvider` when `omniscient/omnimap` is installed,
+registered by `Omnibridge\Laravel\OmnibridgeServiceProvider` when `omnisense/omnimap` is installed,
 reads `config/omnimap.php` - the keys of omnibridge/symfony's `omnimap.yaml`, fewer of them - and
 binds the registry, the map cache, the printer and omnibridge/twig's `MapExtension`, and routes
 the tiles. It routes nothing and gives Twig nothing unless `config/omnimap.php` names a
 `provider`.
 
 ```sh
-composer require omnibridge/laravel omniscient/omnimap omnimap/openstreetmap
+composer require omnibridge/laravel omnisense/omnimap omnimap/openstreetmap
 ```
 
 ## config/omnimap.php

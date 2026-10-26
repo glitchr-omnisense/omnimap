@@ -1,4 +1,4 @@
-# omniscient/omnimap
+# omnisense/omnimap
 
 Omnimap is one PHP contract for web maps, whoever draws them. A page describes a view once - its
 centre, its zoom, its markers - and the provider configured for it turns that view into what is
@@ -55,9 +55,9 @@ means the capability is off until X is given. The browser hosts are the defaults
 
 | Package | Factory name | Renderer (driver) | Static map | Geocoder | Tiles | Browser hosts |
 |---|---|---|---|---|---|---|
-| [`omnimap/google`](https://github.com/glitchr-studio/omnimap-google) | `google` | yes (`assets/google.js`, Maps JavaScript API) | with an HTTP client (and a key, see below) | with a PSR-18 client and a key (geocoder-php's `GoogleMaps`) | - | `maps.googleapis.com`, `maps.gstatic.com`, `fonts.googleapis.com` |
-| [`omnimap/openstreetmap`](https://github.com/glitchr-studio/omnimap-openstreetmap) | `openstreetmap` | yes (`assets/leaflet.js`, Leaflet 1.9.4) | with an HTTP client (and a `user_agent`, see below), tiles put together | with a PSR-18 client, a `user_agent` and a `nominatim` URL (geocoder-php's `Nominatim`) | yes | `tile.openstreetmap.org`, `unpkg.com` |
-| [`omnimap/maplibre`](https://github.com/glitchr-studio/omnimap-maplibre) | `maplibre` | yes (`assets/maplibre.js`, MapLibre GL JS 5.24.0) | - | - | - | `tiles.openfreemap.org`, `unpkg.com` |
+| [`omnimap/google`](https://github.com/glitchr-omnisense/omnimap-google) | `google` | yes (`assets/google.js`, Maps JavaScript API) | with an HTTP client (and a key, see below) | with a PSR-18 client and a key (geocoder-php's `GoogleMaps`) | - | `maps.googleapis.com`, `maps.gstatic.com`, `fonts.googleapis.com` |
+| [`omnimap/openstreetmap`](https://github.com/glitchr-omnisense/omnimap-openstreetmap) | `openstreetmap` | yes (`assets/leaflet.js`, Leaflet 1.9.4) | with an HTTP client (and a `user_agent`, see below), tiles put together | with a PSR-18 client, a `user_agent` and a `nominatim` URL (geocoder-php's `Nominatim`) | yes | `tile.openstreetmap.org`, `unpkg.com` |
+| [`omnimap/maplibre`](https://github.com/glitchr-omnisense/omnimap-maplibre) | `maplibre` | yes (`assets/maplibre.js`, MapLibre GL JS 5.24.0) | - | - | - | `tiles.openfreemap.org`, `unpkg.com` |
 
 The core ships a fourth provider for tests, `Omnimap\Testing\TestTiles` (name `test`: renderer,
 static map, tiles, on `https://tiles.example/`), with no factory ([Testing](testing.md)).
@@ -69,7 +69,7 @@ static map, tiles, on `https://tiles.example/`), with no factory ([Testing](test
 > `image()` throws an `InvalidConfigException` although `capabilities()->staticMap` is `true`.
 
 Each provider's own manual lists its options, its description's keys and its behaviour. A new
-provider starts from [glitchr-studio/omni-provider-template](https://github.com/glitchr-studio/omni-provider-template)
+provider starts from [glitchr-omnisense/omni-provider-template](https://github.com/glitchr-omnisense/omni-provider-template)
 ([Writing a provider](providers.md)).
 
 ## How this manual is organised

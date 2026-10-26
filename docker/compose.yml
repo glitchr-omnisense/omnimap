@@ -1,4 +1,4 @@
-# omniscient/omnimap with every omnimap/* provider:
+# omnisense/omnimap with every omnimap/* provider:
 #
 #   docker compose run --rm omnimap test       # every package's tests (recorded answers, no network)
 #   docker compose run --rm omnimap bare       # plain PHP: a view described, signed, cached, made of tiles - and what PHP loaded
@@ -13,7 +13,7 @@ name: omnimap-harness
 services:
   omnimap:
     build: .
-    image: omniscient/omnimap-harness
+    image: omnisense/omnimap-harness
     # One service, no server beside it: Docker's default bridge, no network of its own to create.
     network_mode: bridge
     env_file:

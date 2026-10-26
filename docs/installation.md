@@ -6,13 +6,13 @@ order: 10
 # Installation
 
 ```sh
-composer require omniscient/omnimap omnimap/openstreetmap symfony/http-client
+composer require omnisense/omnimap omnimap/openstreetmap symfony/http-client
 ```
 
 ## Requirements
 
 - PHP 8.2 or later.
-- `omniscient/omnimap` requires `psr/simple-cache` (^2.0 or ^3.0), `symfony/http-client-contracts`
+- `omnisense/omnimap` requires `psr/simple-cache` (^2.0 or ^3.0), `symfony/http-client-contracts`
   (^3.0, interfaces only) and `willdurand/geocoder` (^5.0, geocoder-php's interfaces and models),
   and nothing else: no framework, no HTTP client.
 - `ext-gd` for the map cache and for images made of tiles: `SnapshotStore::save()` cuts a picture
@@ -22,7 +22,7 @@ composer require omniscient/omnimap omnimap/openstreetmap symfony/http-client
   stands alone) for tiles and Static Maps; for geocoding, a PSR-18 client - Symfony's
   `Psr18Client` over the same client works, with a PSR-17 factory such as `nyholm/psr7` installed.
 - Suggested by the core, each for one storage of the map cache: `league/flysystem`
-  (`Snapshot\FlysystemStorage`) and `omniscient/omnidrive` (`Snapshot\DriveStorage`).
+  (`Snapshot\FlysystemStorage`) and `omnisense/omnidrive` (`Snapshot\DriveStorage`).
 
 The providers require the core, `symfony/http-client-contracts` and, when they geocode,
 `psr/http-client`, `psr/simple-cache` and their geocoder-php provider

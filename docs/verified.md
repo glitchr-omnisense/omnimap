@@ -77,7 +77,7 @@ the family ([Errors](errors.md#outside-the-family)).
 
 ## Responsibility
 
-omniscient/omnimap and its omnimap/* providers are unofficial clients, affiliated with none of
+omnisense/omnimap and its omnimap/* providers are unofficial clients, affiliated with none of
 the services they reach. The MIT licence covers the code only and grants no right to any service
 or its data; whoever runs them complies with each service's terms (named in each provider's
 README and in `Capabilities::$terms`) and obtains what they require - including whether a

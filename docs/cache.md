@@ -136,7 +136,7 @@ deleteDirectory); paths are relative and `/`-separated:
 |---|---|---|
 | `DirectoryStorage` | `(string $root)` | a directory of the server's disk; directories created `0775`; a path holding `..` is an `\InvalidArgumentException` |
 | `FlysystemStorage` | `(League\Flysystem\FilesystemOperator $filesystem)` | any Flysystem 3 storage (local, S3, SFTP...): the operator a host already has; needs `league/flysystem` |
-| `DriveStorage` | `(Omnidrive\Drive $drive)` | an omniscient/omnidrive `Drive`: the storage an application names, wherever it is; needs `omniscient/omnidrive` |
+| `DriveStorage` | `(Omnidrive\Drive $drive)` | an omnisense/omnidrive `Drive`: the storage an application names, wherever it is; needs `omnisense/omnidrive` |
 | the host's own | implements `Storage` | `read()` returns `null` for a missing file, `deleteDirectory()` does nothing for a missing folder |
 
 ## Where pictures come from

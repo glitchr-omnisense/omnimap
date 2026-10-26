@@ -6,7 +6,7 @@ use Omnimap\Registry;
 use PHPUnit\Framework\TestCase;
 
 /**
- * omniscient/omnimap with no framework: in PHP processes of their own (this
+ * omnisense/omnimap with no framework: in PHP processes of their own (this
  * one has loaded PHPUnit), the harness's bare script describes a view,
  * makes its picture of tiles, signs it, keeps it in a directory, prints it,
  * deletes it and geocodes - and every class of the package is loaded.
@@ -30,7 +30,7 @@ final class BareTest extends TestCase
         self::assertFalse($report['before']);
         self::assertSame(['signature' => $report['signature'], 'width' => 1512, 'height' => 938, 'tilesize' => 512, 'xtiles' => 3, 'ytiles' => 2], $report['snapshot']);
         self::assertSame(35, $report['tile-requests'], 'the 7 x 5 tiles of a 1512 x 938 view, once');
-        self::assertSame('omnimap-tests/1.0 (+https://github.com/glitchr-studio/omnimap)', $report['user-agent']);
+        self::assertSame('omnimap-tests/1.0 (+https://github.com/glitchr-omnisense/omnimap)', $report['user-agent']);
         self::assertContains('maps/'.$report['signature'].'/metadata.txt', $report['files']);
         self::assertContains('maps/'.$report['signature'].'/image-5.png', $report['files']);
         self::assertSame('width="512" height="512"', $report['tile-0']);

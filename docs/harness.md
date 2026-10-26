@@ -21,11 +21,11 @@ directory holding their checkouts - `../..` when this core sits in the workspace
 
 | File | |
 |---|---|
-| `docker/Dockerfile` | `php:8.4-cli` with GD (PNG, JPEG, WebP, FreeType), git, unzip and Composer 2; image `omniscient/omnimap-harness` |
+| `docker/Dockerfile` | `php:8.4-cli` with GD (PNG, JPEG, WebP, FreeType), git, unzip and Composer 2; image `omnisense/omnimap-harness` |
 | `docker/compose.yml` | one service, `omnimap`, on Docker's default bridge (no network of its own); mounts the core at `/omnimap/core`, the providers' checkouts read-only at `/omnimap/plugins`, and a volume `harness` at `/harness` (the composed installation and Composer's cache) |
 | `docker/.env` | `OMNIMAP_PLUGINS=../..`: the checkouts beside the core |
 | `docker/harness/plugins.php` | the providers installed beside the core and their tests' namespaces: `google`, `openstreetmap`, `maplibre` |
-| `docker/harness/setup.php` | writes `/harness/composer.json` and `/harness/phpunit.xml`: the core and each provider as path repositories (symlinked) when their checkout is there, else a git clone of `https://github.com/glitchr-studio/omnimap-<name>.git`; the dev tools (PHPUnit 11, PHPStan 2, symfony/http-client and cache, nyholm/psr7, Flysystem and its memory adapter, omnidrive, opis/json-schema); one test suite per package; `/harness/packages/<name>` linked to each provider for PHPStan. Files are rewritten only when they change |
+| `docker/harness/setup.php` | writes `/harness/composer.json` and `/harness/phpunit.xml`: the core and each provider as path repositories (symlinked) when their checkout is there, else a git clone of `https://github.com/glitchr-omnisense/omnimap-<name>.git`; the dev tools (PHPUnit 11, PHPStan 2, symfony/http-client and cache, nyholm/psr7, Flysystem and its memory adapter, omnidrive, opis/json-schema); one test suite per package; `/harness/packages/<name>` linked to each provider for PHPStan. Files are rewritten only when they change |
 | `docker/entrypoint.sh` | runs `setup.php`, then `composer install` (no `vendor/`) or `composer update` (`composer.json` newer than the lock), then the command |
 | `docker/harness/bin/bare` | the plain-PHP script `Tests/BareTest.php` runs |
 

@@ -1,4 +1,4 @@
-# omniscient/omnimap
+# omnisense/omnimap
 
 Maps under any PHP host, whoever draws them. One description of a view - its centre, its zoom,
 its markers - that a provider draws in the browser, that the server can turn into an image, and
@@ -52,18 +52,18 @@ echo (new MapHtml())->snapshot('map', $snapshots->signature($view), $snapshots->
 - **The browser** (`assets/`, ES modules, no library): `omnimap.js` draws a description with the
   provider's driver (shipped by the provider package) behind a consent gate; `snapshot.js` lays
   a kept picture's tiles out; `capture.js` sends a live map's picture to the cache.
-- **Providers** are packages: [omnimap/google](https://github.com/glitchr-studio/omnimap-google),
-  [omnimap/openstreetmap](https://github.com/glitchr-studio/omnimap-openstreetmap),
-  [omnimap/maplibre](https://github.com/glitchr-studio/omnimap-maplibre) (vector styles drawn by
+- **Providers** are packages: [omnimap/google](https://github.com/glitchr-omnisense/omnimap-google),
+  [omnimap/openstreetmap](https://github.com/glitchr-omnisense/omnimap-openstreetmap),
+  [omnimap/maplibre](https://github.com/glitchr-omnisense/omnimap-maplibre) (vector styles drawn by
   MapLibre GL JS, OpenFreeMap's by default). A new one starts from
-  [glitchr-studio/omni-provider-template](https://github.com/glitchr-studio/omni-provider-template).
+  [glitchr-omnisense/omni-provider-template](https://github.com/glitchr-omnisense/omni-provider-template).
 - **Hosts**: omnibridge/symfony (`Omnibridge\Symfony\Map`) and omnibridge/laravel
   (`Omnibridge\Laravel\Map`) wire it - configuration, services, the cache's routes, Twig
   functions. Nothing of a framework here.
 
 ## Documentation
 
-The manual, in `docs/` (one page on the omniscient site):
+The manual, in `docs/` (one page on the omnisense site):
 
 - [Overview and providers](docs/index.md)
 - [Installation, in plain PHP](docs/installation.md) (run as written by the tests)
@@ -101,7 +101,7 @@ The manual, in `docs/` (one page on the omniscient site):
 
 ## Responsibility
 
-omniscient/omnimap and its omnimap/* providers are unofficial clients, affiliated with none of
+omnisense/omnimap and its omnimap/* providers are unofficial clients, affiliated with none of
 the services they reach. The MIT licence covers the code only and grants no right to any service
 or its data; whoever runs them complies with each service's terms (named in each provider's
 README and in `Capabilities::$terms`) and obtains what they require.

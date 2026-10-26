@@ -1,9 +1,9 @@
 {
-    "name": "omniscient/omnimap",
+    "name": "omnisense/omnimap",
     "type": "library",
     "description": "Omnimap: maps under any PHP host, whoever draws them - one description of a view (centre, zoom, markers) that a provider's driver draws in the browser, the provider's image of it made on the server, geocoding over geocoder-php, and the map cache: the picture of a view, signed, cut in tiles, kept in a storage of the host's and served from it, captured by the browser or made by the server. Providers are packages of their own (omnimap/google, omnimap/openstreetmap); the Symfony and Laravel bridges live in omnibridge.",
     "keywords": ["map", "maps", "geocoding", "static-map", "tiles", "leaflet", "google-maps", "openstreetmap", "framework-agnostic", "omnimap"],
-    "homepage": "https://github.com/glitchr-studio/omnimap",
+    "homepage": "https://github.com/glitchr-omnisense/omnimap",
     "license": "MIT",
     "authors": [
         {
@@ -20,7 +20,7 @@
     "require-dev": {
         "league/flysystem": "^3.0",
         "league/flysystem-memory": "^3.0",
-        "omniscient/omnidrive": "^1.0@dev",
+        "omnisense/omnidrive": "^1.0@dev",
         "opis/json-schema": "^2.3",
         "phpunit/phpunit": "^11.0",
         "psr/http-client": "^1.0",
@@ -34,8 +34,11 @@
         "omnimap/google": "Google Maps: the Maps JavaScript API, Static Maps, geocoding",
         "omnimap/maplibre": "MapLibre: vector styles drawn by MapLibre GL JS in the browser (OpenFreeMap's by default, no key)",
         "omnimap/openstreetmap": "OpenStreetMap: Leaflet over an OSM tile server, images made of its tiles, Nominatim's geocoding",
-        "omniscient/omnibridge": "The host contracts; omnibridge/symfony and omnibridge/laravel wire omnimap into their host",
-        "omniscient/omnidrive": "The map cache on an omnidrive Drive (Snapshot\\DriveStorage): the storage an application names, wherever it is"
+        "omnisense/omnibridge": "The host contracts; omnibridge/symfony and omnibridge/laravel wire omnimap into their host",
+        "omnisense/omnidrive": "The map cache on an omnidrive Drive (Snapshot\\DriveStorage): the storage an application names, wherever it is"
+    },
+    "replace": {
+        "omniscient/omnimap": "self.version"
     },
     "autoload": {
         "psr-4": {

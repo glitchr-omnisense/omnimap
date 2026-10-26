@@ -111,7 +111,7 @@ it; `Tests/MapDescriptionSchemaTest.php` checks every installed renderer's descr
 | `options` | object | no | the provider's options for its library, from `MapView::options(<provider>)` |
 
 Any other key is the provider's own (`tiles` for OpenStreetMap, `style` for MapLibre). The schema's
-`$id` is `https://raw.githubusercontent.com/glitchr-studio/omnimap/1.x/schema/map-description.schema.json`.
+`$id` is `https://raw.githubusercontent.com/glitchr-omnisense/omnimap/1.x/schema/map-description.schema.json`.
 
 Each provider's keys:
 

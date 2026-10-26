@@ -66,7 +66,7 @@ final class MapDescriptionSchemaTest extends TestCase
         }
     }
 
-    private const SCHEMA_ID = 'https://raw.githubusercontent.com/glitchr-studio/omnimap/1.x/schema/map-description.schema.json';
+    private const SCHEMA_ID = 'https://raw.githubusercontent.com/glitchr-omnisense/omnimap/1.x/schema/map-description.schema.json';
 
     private static function validator(): Validator
     {

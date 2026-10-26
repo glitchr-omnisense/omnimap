@@ -6,11 +6,11 @@ use Omnidrive\Drive;
 use Omnidrive\Exception\FileNotFoundException;
 
 /**
- * The cache on an omnidrive Drive (omniscient/omnidrive, suggested): the
+ * The cache on an omnidrive Drive (omnisense/omnidrive, suggested): the
  * storage an application names ("uploads"), wherever it is - a directory, an
  * S3 bucket, an SFTP server - Flysystem behind it.
  *
- * @suggested omniscient/omnidrive
+ * @suggested omnisense/omnidrive
  */
 final class DriveStorage implements Storage
 {
