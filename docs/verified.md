@@ -70,9 +70,6 @@ its output pasted as it came.
 - The scripts that reach a real service (the second script of [Installation](installation.md),
   the Photon example of [Geocoding](usage-geocoding.md)) were not run.
 
-The known defect still open is flagged where the behaviour is described: omnimap/maplibre not
-wired by the bridges ([Symfony](symfony.md#services), [Laravel](laravel.md#bindings)).
-
 ## Responsibility
 
 omnisense/omnimap and its omnimap/* providers are unofficial clients, affiliated with none of

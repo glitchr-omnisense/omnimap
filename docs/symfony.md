@@ -81,8 +81,8 @@ google-tilemap, suffix: _html2canvas }`, `routes.tile: { path: '/google/{signatu
 
 | Service id | Class | |
 |---|---|---|
-| `Omnimap\Google\GoogleFactory`, `Omnimap\OpenStreetMap\OpenStreetMapFactory` | the factories | registered when their package is installed, over `http_client`, `omnimap.psr18` and `omnimap.cache`, tagged `omnimap.provider_factory` |
-| `Omnimap\Registry` (public) | `Registry` | every service tagged `omnimap.provider_factory`, and `providers` |
+| `Omnimap\Google\GoogleFactory`, `Omnimap\OpenStreetMap\OpenStreetMapFactory`, `Omnimap\MapLibre\MapLibreFactory` | the factories | registered when their package is installed, Google's and OpenStreetMap's over `http_client`, `omnimap.psr18` and `omnimap.cache`, MapLibre's over `http_client`, tagged `omnimap.provider_factory` |
+| `Omnimap\Registry` (public) | `Registry` | every service tagged `omnimap.provider_factory` (the factories above, an application's own by the tag), and `providers` |
 | `Omnimap\MapRendererInterface` | the page's provider | `Registry::renderer(provider)` |
 | `Omnimap\GeocoderInterface` | the geocoder | `Registry::geocoder(geocoder ?? provider)` |
 | `Omnimap\Snapshot\SnapshotStore` | the store | on `cache.storage`, or a `DriveStorage` of `Drives::get(cache.drive)` |
@@ -96,20 +96,6 @@ google-tilemap, suffix: _html2canvas }`, `routes.tile: { path: '/google/{signatu
 | `omnimap.psr18` | `Psr18Client` over `http_client` | when a PSR-17 factory is installed; otherwise no provider geocodes |
 
 All are autowirable by their class: `public function __construct(private readonly Registry $maps, private readonly GeocoderInterface $geocoder) {}`.
-
-> [!WARNING]
-> Known defect: the extension registers `GoogleFactory` and `OpenStreetMapFactory` only, where
-> `omnimap/maplibre` is expected among the providers it wires: with only omnimap/maplibre
-> installed, `provider: maplibre` is `No "maplibre" factory ... installed: ...`. Register its
-> factory yourself, with the tag the registry collects:
->
-> ```yaml
-> # config/services.yaml
-> services:
->     Omnimap\MapLibre\MapLibreFactory:
->         arguments: ['@http_client']
->         tags: [omnimap.provider_factory]
-> ```
 
 ## Twig functions
 
