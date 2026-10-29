@@ -54,7 +54,7 @@ no required option.
 | `tiles` | string | `https://tile.openstreetmap.org/{z}/{x}/{y}.png` | the tile URL, `{z}`, `{x}`, `{y}` in it, `{s}` for a server's subdomains (`a`, `b`, `c`); the default is the Foundation's server, for modest use |
 | `attribution` | string (HTML) | `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors` | shown on the live map, beside a kept picture and drawn on an image |
 | `max_zoom` | int | `19` | |
-| `tile_size` | int | `256` | see the 512-pixel defect in [Tiles](usage-tiles.md) |
+| `tile_size` | int | `256` | the tiles' size in pixels; 512 for a server numbering 512-pixel tiles 2^z a side at `z` ([Tiles](usage-tiles.md)) |
 | `user_agent` | string | `''` | the application's name and a contact, sent with every request the server makes (tiles, Nominatim); required to fetch a tile and to geocode |
 | `referer` | string | `''` | sent with them too, when set |
 | `nominatim` | string | `https://nominatim.openstreetmap.org` | the geocoder's URL; empty: no geocoding |
@@ -95,7 +95,7 @@ for `MapLibreProvider::inspect()` (reading a style's hosts on the server).
 | `Snapshot\DirectoryStorage` | `(string $root)` | |
 | `Snapshot\FlysystemStorage` | `(League\Flysystem\FilesystemOperator $filesystem)` | |
 | `Snapshot\DriveStorage` | `(Omnidrive\Drive $drive)` | |
-| `MapHtml` | `(array $options = [])` | `class` (`omnimap-snapshot`), `suffix` (`_snapshot`), `src` (`/omnimap/{signature}/{id}.webp`), `missing` (`''`) |
+| `MapHtml` | `(array $options = [])` | `class` (`omnimap-snapshot`), `suffix` (`_snapshot`), `src` (`/omnimap/{signature}/{id}.webp`), `missing` (`''`: the address of the picture `snapshot.js` shows for a missing picture or tile) |
 | `MapPrinter` | `(Snapshots $snapshots, MapHtml $html = new MapHtml(), bool $cacheOnly = true, ?\Closure $onError = null)` | [The page](cache.md#the-page-mapprinter) |
 
 ## Images and geocoding

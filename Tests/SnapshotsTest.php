@@ -45,4 +45,24 @@ final class SnapshotsTest extends TestCase
         @rmdir($dir.'/google');
         @rmdir($dir);
     }
+
+    /** Every throw of the family is an OmnimapException: a catch of it misses none. */
+    public function testWithoutAStaticMapAndAPathOutOfTheCacheTheFamilysExceptions(): void
+    {
+        $tiles = new TestTiles(new RecordedHttpClient(PlainTiles::answer()));
+        $snapshots = new Snapshots($tiles, new Signer('c2VjcmV0'), new SnapshotStore(new DirectoryStorage(sys_get_temp_dir().'/omnimap-none')));
+        try {
+            $snapshots->make(new MapView(new LatLng(35, 135), 6));
+            self::fail('No static map: no picture made.');
+        } catch (\Throwable $e) {
+            self::assertInstanceOf(\Omnimap\Exception\NotSupportedException::class, $e);
+            self::assertInstanceOf(\LogicException::class, $e, 'still the LogicException it was');
+        }
+        try {
+            (new DirectoryStorage(sys_get_temp_dir().'/omnimap-none'))->read('a/../../etc/passwd');
+            self::fail('No ".." in a cache path.');
+        } catch (\Throwable $e) {
+            self::assertInstanceOf(\Omnimap\Exception\InvalidArgumentException::class, $e);
+        }
+    }
 }

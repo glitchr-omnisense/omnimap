@@ -11,11 +11,11 @@ extends the SPL exception that fits, for code that catches those:
 
 | Exception | Extends | Thrown when |
 |---|---|---|
-| `InvalidConfigException` | `\InvalidArgumentException` | a provider is not configured or its factory not installed (`Registry`); a required option is missing (`ProviderFactory::create()`); a call needs an option that was not given: Google's Static Maps without a key, an OpenStreetMap tile fetched without a `user_agent` |
-| `NotSupportedException` | `\LogicException` | a provider asked for a contract it does not implement (`Registry::renderer()`, `staticMap()`, `geocoder()`, `tiles()`); a capability declared off, called anyway (no HTTP client for an image, no PSR-18 client or key for geocoding, no client for MapLibre's `inspect()`); `cache.make: true` in Symfony on a provider that makes no image |
+| `InvalidConfigException` | `\InvalidArgumentException` | a provider is not configured or its factory not installed (`Registry`); a required option is missing (`ProviderFactory::create()`); a call needs an option that was not given: Google's `staticUrl()` without a key, an OpenStreetMap tile's `headers()` without a `user_agent` |
+| `NotSupportedException` | `\LogicException` | a provider asked for a contract it does not implement (`Registry::renderer()`, `staticMap()`, `geocoder()`, `tiles()`); a capability declared off, called anyway (no HTTP client, no key for Google or no `user_agent` for OpenStreetMap for an image, no PSR-18 client or key for geocoding, no client for MapLibre's `inspect()`); `Snapshots::make()` with no static map (check `canMake()` first, or call `findOrMake()`); `cache.make: true` in Symfony on a provider that makes no image |
 | `ProviderException` | `\RuntimeException` | the provider answered, and not with what was asked: a status other than 200 (401, 403, 404, 429, 5xx), a body that is not an image where an image was asked (a proxy's HTML page in a 200), geocoder-php's own errors (an error status, a quota, an answer it could not read), a MapLibre style that is not JSON or not a style |
 | `UnreachableException` | `\RuntimeException` | the provider could not be reached: DNS, connection, timeout (Symfony's HTTP client's transport exceptions, PSR-18's `NetworkExceptionInterface`) |
-| `InvalidArgumentException` | `\InvalidArgumentException` | a value no map can hold: a latitude past a pole or not finite, a zoom outside 0..24, a size below one pixel or not `WIDTHxHEIGHT`; a signature that is not `[A-Za-z0-9_-]{1,128}`; a picture GD cannot read; a cache format other than png, jpeg, jpg, webp |
+| `InvalidArgumentException` | `\InvalidArgumentException` | a value no map can hold: a latitude past a pole or not finite, a zoom outside 0..24, a size below one pixel or not `WIDTHxHEIGHT`; a signature that is not `[A-Za-z0-9_-]{1,128}`; a picture GD cannot read; a cache format other than png, jpeg, jpg, webp; a `DirectoryStorage` path holding `..` (`SnapshotStore` never builds one: signatures are checked first) |
 
 The messages name the provider (its title) and what was asked:
 
@@ -89,15 +89,9 @@ zoom too deep          InvalidArgumentException: A zoom lies between 0 and 24, n
 
 ## Outside the family
 
-Three throws are not `OmnimapException`s:
+What a storage or a client throws itself passes through as it is:
 
 | Where | Exception | When |
 |---|---|---|
-| `Snapshots::make()` | `\LogicException` | no static map was given (check `canMake()` first, or call `findOrMake()`) |
-| `DirectoryStorage` | `\InvalidArgumentException` | a path holding `..` (`SnapshotStore` never builds one: signatures are checked first) |
 | `FlysystemStorage`, `DriveStorage` | Flysystem's `FilesystemException`, omnidrive's exceptions | the storage failed to write or delete (a missing file on read is `null`, not an exception) |
 
-> [!WARNING]
-> Known defect: `OmnimapException`'s docblock says "Every exception omnimap throws", where
-> `Snapshots::make()` throws a plain `\LogicException` and `DirectoryStorage` a plain
-> `\InvalidArgumentException`: a `catch (OmnimapException)` misses them.

@@ -60,6 +60,44 @@ final class TileStitcherTest extends TestCase
         self::assertSame([0, 0, 255], array_values(\array_slice(imagecolorsforindex($picture, imagecolorat($picture, 378, 250)), 0, 3)));
     }
 
+    /**
+     * A source of 512-pixel tiles numbered as such servers do (2^z a side at z, Leaflet's zoomOffset -1,
+     * https://leafletjs.com/reference.html#tilelayer-zoomoffset): the view's zoom z is the source's z - 1.
+     */
+    public function testA512PixelSourceIsReadAtTheZoomBelow(): void
+    {
+        $http = new RecordedHttpClient(PlainTiles::answer(512));
+        $image = (new TestTiles($http, tileSize: 512))->image(new MapView(new LatLng(0, 0), 1), new Size(512, 512));
+
+        self::assertSame(['https://tiles.example/0/0/0.png'], array_column($http->requests, 'url'), 'the world at zoom 1 is 512 pixels: the one tile of zoom 0');
+        $picture = imagecreatefromstring($image->bytes);
+        self::assertNotFalse($picture);
+        self::assertSame([60, 90, 120], array_values(\array_slice(imagecolorsforindex($picture, (int) imagecolorat($picture, 100, 300)), 0, 3)), 'tile 0/0/0 laid over the whole picture');
+
+        $http = new RecordedHttpClient(PlainTiles::answer(512));
+        (new TestTiles($http, tileSize: 512))->image(new MapView(new LatLng(35.0116, 135.7681), 12), new Size(600, 400));
+        self::assertContains('https://tiles.example/11/1796/811.png', array_column($http->requests, 'url'), 'the tile under the centre: 12/3592/1622 of a 256-pixel source');
+    }
+
+    public function testA512PixelSourceAtZoom0IsItsOneTileAtHalfItsSize(): void
+    {
+        // The world's one tile: its western half red, its eastern half blue.
+        $tile = imagecreatetruecolor(512, 512);
+        imagefilledrectangle($tile, 0, 0, 255, 511, (int) imagecolorallocate($tile, 255, 0, 0));
+        imagefilledrectangle($tile, 256, 0, 511, 511, (int) imagecolorallocate($tile, 0, 0, 255));
+        ob_start();
+        imagepng($tile);
+        $png = (string) ob_get_clean();
+        $http = new RecordedHttpClient(static fn () => [200, $png, ['content-type' => ['image/png']]]);
+        $image = (new TestTiles($http, tileSize: 512))->image(new MapView(new LatLng(0, 0), 0), new Size(256, 256));
+
+        self::assertSame(['https://tiles.example/0/0/0.png'], array_column($http->requests, 'url'));
+        $picture = imagecreatefromstring($image->bytes);
+        self::assertNotFalse($picture);
+        self::assertSame([255, 0, 0], array_values(\array_slice(imagecolorsforindex($picture, (int) imagecolorat($picture, 60, 128)), 0, 3)), 'the western hemisphere');
+        self::assertSame([0, 0, 255], array_values(\array_slice(imagecolorsforindex($picture, (int) imagecolorat($picture, 196, 128)), 0, 3)), 'the eastern one: the whole tile, at half its size');
+    }
+
     public function testAnErrorStatus(): void
     {
         $this->expectException(ProviderException::class);

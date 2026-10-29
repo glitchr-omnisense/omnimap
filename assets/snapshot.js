@@ -5,6 +5,11 @@
  * cover the frame (object-fit: cover, centred), and loads each tile only
  * once the frame is shown and the tile is on screen. No library.
  *
+ * data-missing (MapHtml's "missing" option), when not empty, is the address
+ * of a picture shown in place of what is not there: over a frame with no
+ * picture kept (covering it, centred), and in place of a tile that does not
+ * load.
+ *
  * The algorithm is glitchr/ux-google's tilemap.js, without jQuery: the grid
  * is fitted by the capture's real size (the last row and column are padding)
  * and grown by COPYRIGHT_MARGIN at the bottom.
@@ -39,23 +44,23 @@ function fit(containerWidth, containerHeight, width, height) {
   return { width: w, height: h, left: (containerWidth - w) / 2, top: (containerHeight - h) / 2 };
 }
 
-function lazyLoad(frame) {
+function lazyLoad(frame, missing) {
   const tiles = frame.querySelectorAll('[data-background-image]');
   if (!('IntersectionObserver' in window)) {
-    tiles.forEach((tile) => reveal(tile));
+    tiles.forEach((tile) => reveal(tile, missing));
     return;
   }
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
       observer.unobserve(entry.target);
-      reveal(entry.target);
+      reveal(entry.target, missing);
     });
   });
   tiles.forEach((tile) => observer.observe(tile));
 }
 
-function reveal(tile) {
+function reveal(tile, missing) {
   const src = tile.dataset.backgroundImage;
   tile.removeAttribute('data-background-image');
   if (!src) return;
@@ -73,6 +78,12 @@ function reveal(tile) {
     requestAnimationFrame(() => { tile.style.transition = ''; });
   } else {
     image.addEventListener('load', show, { once: true });
+    if (missing) {
+      image.addEventListener('error', () => {
+        tile.style.backgroundImage = `url('${missing}')`;
+        tile.style.opacity = '1';
+      }, { once: true });
+    }
   }
 }
 
@@ -88,7 +99,11 @@ export function layout(frame) {
   const width = parseFloat(frame.getAttribute('width')) || 0;
   const height = parseFloat(frame.getAttribute('height')) || 0;
   const tilesize = parseInt(frame.getAttribute('data-tilesize'), 10) || Math.max(width, height);
-  if (!xtiles || !ytiles || !tilesize) return;
+  const missing = frame.getAttribute('data-missing') || '';
+  if (!xtiles || !ytiles || !tilesize) {
+    if (missing) Object.assign(frame.style, { backgroundImage: `url('${missing}')`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' });
+    return;
+  }
 
   const gridWidth = xtiles * tilesize;
   const gridHeight = ytiles * tilesize;
@@ -132,7 +147,7 @@ export function layout(frame) {
       });
     }
   }
-  lazyLoad(frame);
+  lazyLoad(frame, missing);
 }
 
 let observer = null;

@@ -4,6 +4,7 @@
 #   docker compose run --rm omnimap bare       # plain PHP: a view described, signed, cached, made of tiles - and what PHP loaded
 #   docker compose run --rm omnimap live       # the checks that reach OpenStreetMap (a few tiles, one Nominatim query), within its policies
 #   docker compose run --rm omnimap phpstan    # PHPStan, each package at the highest level
+#   docker compose run --rm js                 # the browser scripts' tests (Tests/js of the core and each provider) on node's test runner
 #   docker compose down -v                     # the harness's volume gone
 #
 # Providers come from GitHub (branch 1.x) unless their checkout sits under OMNIMAP_PLUGINS (set it
@@ -23,6 +24,15 @@ services:
       - ..:/omnimap/core
       - ${OMNIMAP_PLUGINS:-./plugins}:/omnimap/plugins:ro
       - harness:/harness
+
+  js:
+    image: node:22-alpine
+    network_mode: none
+    working_dir: /omnimap
+    volumes:
+      - ..:/omnimap/core:ro
+      - ${OMNIMAP_PLUGINS:-./plugins}:/omnimap/plugins:ro
+    command: ["sh", "-c", "node --test $$(ls core/Tests/js/*.test.mjs plugins/*/Tests/js/*.test.mjs 2>/dev/null | grep -v '^plugins/core/')"]
 
 volumes:
   harness:

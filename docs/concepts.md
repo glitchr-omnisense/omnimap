@@ -194,17 +194,10 @@ A point on Earth.
 | Method | |
 |---|---|
 | `LatLng::fromArray(['lat' => ..., 'lng' => ...])` | from an array; numeric strings accepted |
-| `wrapped(): LatLng` | the same point, its longitude between -180 (included) and 180 (excluded) |
+| `wrapped(): LatLng` | the same point, its longitude between -180 (included) and 180 (excluded); `MapView::toArray()`, hence every description, carries the centre and the markers wrapped, as `schema/map-description.schema.json` asks (`new LatLng(10, 190)` is described `lng: -170`) |
 | `equals(LatLng $other, float $tolerance = 1e-9): bool` | both coordinates within the tolerance |
 | `toArray(): array{lat, lng}` | |
 | `__toString()` | `"lat,lng"` with at most 7 decimals and no trailing zeros (`35.0116,135.7681`), as URLs and geocoders write a point |
-
-> [!WARNING]
-> Known defect: a `LatLng` keeps a longitude outside -180 to 180 as it is, and `MapView::toArray()`
-> (hence every description) carries it unwrapped, where `schema/map-description.schema.json`
-> requires a longitude between -180 and 180: a view centred at `new LatLng(10, 190)` gives a
-> description the schema refuses. Call `wrapped()` on a longitude that may have gone round the
-> world.
 
 ### Bounds
 

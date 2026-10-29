@@ -12,6 +12,7 @@ installation, PHP 8.4 with GD:
     docker compose run --rm omnimap live       # the checks that reach OpenStreetMap, within its policies
     docker compose run --rm omnimap bare       # the bare script: plain PHP, and what PHP loaded
     docker compose run --rm omnimap phpstan    # PHPStan at the highest level, each package
+    docker compose run --rm js                 # the browser scripts' tests, on node's test runner
     docker compose down -v
 
 Providers come from GitHub (branch 1.x) unless `OMNIMAP_PLUGINS` (in `docker/.env`) points at a
@@ -22,7 +23,7 @@ directory holding their checkouts - `../..` when this core sits in the workspace
 | File | |
 |---|---|
 | `docker/Dockerfile` | `php:8.4-cli` with GD (PNG, JPEG, WebP, FreeType), git, unzip and Composer 2; image `omnisense/omnimap-harness` |
-| `docker/compose.yml` | one service, `omnimap`, on Docker's default bridge (no network of its own); mounts the core at `/omnimap/core`, the providers' checkouts read-only at `/omnimap/plugins`, and a volume `harness` at `/harness` (the composed installation and Composer's cache) |
+| `docker/compose.yml` | the service `omnimap`, on Docker's default bridge (no network of its own); mounts the core at `/omnimap/core`, the providers' checkouts read-only at `/omnimap/plugins`, and a volume `harness` at `/harness` (the composed installation and Composer's cache). The service `js` (`node:22-alpine`, no network) runs `node --test` over `Tests/js/*.test.mjs` of the core and of each provider's checkout, the core and the providers mounted read-only |
 | `docker/.env` | `OMNIMAP_PLUGINS=../..`: the checkouts beside the core |
 | `docker/harness/plugins.php` | the providers installed beside the core and their tests' namespaces: `google`, `openstreetmap`, `maplibre` |
 | `docker/harness/setup.php` | writes `/harness/composer.json` and `/harness/phpunit.xml`: the core and each provider as path repositories (symlinked) when their checkout is there, else a git clone of `https://github.com/glitchr-omnisense/omnimap-<name>.git`; the dev tools (PHPUnit 11, PHPStan 2, symfony/http-client and cache, nyholm/psr7, Flysystem and its memory adapter, omnidrive, opis/json-schema); one test suite per package; `/harness/packages/<name>` linked to each provider for PHPStan. Files are rewritten only when they change |

@@ -161,7 +161,7 @@ deleteDirectory); paths are relative and `/`-separated:
 | `signature(MapView $view): string` | the view's name |
 | `find(MapView $view): ?Snapshot` | the picture kept, or `null` |
 | `canMake(): bool` | whether a static map was given |
-| `make(MapView $view): Snapshot` | the picture made now by the server and kept, replacing any; without a static map a `\LogicException` |
+| `make(MapView $view): Snapshot` | the picture made now by the server and kept, replacing any; without a static map a `NotSupportedException` (a `\LogicException`) |
 | `findOrMake(MapView $view): ?Snapshot` | the picture kept; made now when there is none and the server can make one; else `null` |
 | `save(string $signature, string $image, ?int $tilesize = null): Snapshot` | a picture the browser captured - an image's bytes, or a `data:` URL (its base64 after the comma, decoded strictly) - kept under the signature, cut in `$tilesize` (the constructor's when `null`) |
 | `delete(string $signature): void` | the picture forgotten |
@@ -186,7 +186,7 @@ replace the picture of any name.
 | Method | |
 |---|---|
 | `map(MapView $view, bool $mayChange = false): string` | the element, by the rule above |
-| `exportButton(MapView $view, bool $mayChange, string $url, string $token, string $contents, array $attributes = []): string` | the export button when `$mayChange`, else `''` |
+| `exportButton(MapView $view, bool $mayChange, string $url, string $token, string $contents, array $attributes = []): string` | the export button when `$mayChange` and no picture is kept (the live map is what they see), else `''` |
 | `suppressButton(...)` (same arguments) | the delete button when `$mayChange` and a picture is kept, else `''` |
 | `signature(MapView $view): string`, `snapshots(): Snapshots` | |
 

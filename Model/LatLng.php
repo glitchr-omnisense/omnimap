@@ -7,7 +7,8 @@ use Omnimap\Exception\InvalidArgumentException;
 /**
  * A point on Earth in degrees (WGS 84): a latitude from -90 to 90, a
  * longitude of any value (180.5 and -179.5 are the same meridian;
- * wrapped() brings it back between -180 and 180).
+ * wrapped() brings it back between -180 and 180). A map's description
+ * carries it wrapped (MapView::toArray()).
  */
 final readonly class LatLng implements \JsonSerializable, \Stringable
 {

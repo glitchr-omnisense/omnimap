@@ -24,6 +24,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  *
  * A scale of 2 takes the tiles of the next zoom: the same view at twice
  * the density.
+ *
+ * The view's zoom is the one every provider shares (0: the world in 256
+ * pixels). A source of 512-pixel tiles numbers them as such servers do,
+ * 2^z a side at z (Leaflet's zoomOffset -1): the view's zoom z is read at
+ * the source's zoom z - 1, and at zoom 0 the source's one tile is drawn
+ * at half its size.
  */
 final class TileStitcher
 {
@@ -40,13 +46,16 @@ final class TileStitcher
     {
         $scale = max(1, min(2, $scale));
         $zoom = min($this->tiles->maxZoom(), $view->zoom + ($scale - 1));
-        $tile = $this->tiles->tileSize();
         $out = $size->scaled($scale);
         $centre = WebMercator::point($view->center, $zoom);
         $left = $centre->x - $out->width / 2;
         $top = $centre->y - $out->height / 2;
-        // The world in tiles of the source's size at this zoom (a 512-pixel source halves the count).
-        $worldTiles = (int) round(WebMercator::worldSize($zoom) / $tile);
+        // The source's own zoom: a 512-pixel tile covers what four 256-pixel ones of the next zoom do.
+        $offset = max(0, (int) round(log(max(256, $this->tiles->tileSize()) / 256, 2)));
+        $tileZoom = max(0, $zoom - $offset);
+        $worldTiles = 2 ** $tileZoom;
+        // A tile's side in the image: the source's size, but at a zoom below its offset (half of it at zoom 0 for 512).
+        $tile = (int) round(WebMercator::worldSize($zoom) / $worldTiles);
 
         $canvas = imagecreatetruecolor(max(1, $out->width), max(1, $out->height));
         imagefill($canvas, 0, 0, self::color($canvas, $this->background));
@@ -57,7 +66,7 @@ final class TileStitcher
                 continue;
             }
             for ($tx = (int) floor($left / $tile); $tx <= (int) floor(($left + $out->width - 1) / $tile); ++$tx) {
-                $wanted[] = [$tx, $ty, $this->tiles->url($zoom, (($tx % $worldTiles) + $worldTiles) % $worldTiles, $ty)];
+                $wanted[] = [$tx, $ty, $this->tiles->url($tileZoom, (($tx % $worldTiles) + $worldTiles) % $worldTiles, $ty)];
             }
         }
         foreach ($this->fetch(array_unique(array_column($wanted, 2))) as $url => $bytes) {
@@ -66,8 +75,15 @@ final class TileStitcher
                 throw ProviderException::answered($this->tiles->getTitle(), $url, 'something that is not an image');
             }
             foreach ($wanted as [$tx, $ty, $wantedUrl]) {
-                if ($wantedUrl === $url) {
-                    imagecopy($canvas, $picture, (int) round($tx * $tile - $left), (int) round($ty * $tile - $top), 0, 0, imagesx($picture), imagesy($picture));
+                if ($wantedUrl !== $url) {
+                    continue;
+                }
+                $x = (int) round($tx * $tile - $left);
+                $y = (int) round($ty * $tile - $top);
+                if (imagesx($picture) === $tile && imagesy($picture) === $tile) {
+                    imagecopy($canvas, $picture, $x, $y, 0, 0, $tile, $tile);
+                } else {
+                    imagecopyresampled($canvas, $picture, $x, $y, 0, 0, $tile, $tile, imagesx($picture), imagesy($picture));
                 }
             }
         }

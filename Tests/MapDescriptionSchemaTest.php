@@ -55,6 +55,27 @@ final class MapDescriptionSchemaTest extends TestCase
         self::assertTrue($result->isValid(), (string) json_encode($result->error()?->args()).' '.$result->error()?->message());
     }
 
+    /**
+     * A longitude that went round the world (190, -200) is described between -180 and 180, as the schema asks.
+     *
+     * @param \Closure(): MapRendererInterface $renderer
+     */
+    #[DataProvider('renderers')]
+    public function testALongitudeOutsideTheWorldIsDescribedWrapped(\Closure $renderer): void
+    {
+        $view = new MapView(new LatLng(10, 190), 3, [new Marker(new LatLng(0, -200), 'Pacific')]);
+        $description = $renderer()->describe($view);
+
+        $described = $description['view'];
+        self::assertIsArray($described);
+        self::assertSame(['lat' => 10.0, 'lng' => -170.0], $described['center']);
+        self::assertIsArray($described['markers']);
+        self::assertIsArray($described['markers'][0]);
+        self::assertSame(['lat' => 0.0, 'lng' => 160.0], $described['markers'][0]['position']);
+        $result = self::validator()->validate(json_decode((string) json_encode($description, \JSON_THROW_ON_ERROR)), self::SCHEMA_ID);
+        self::assertTrue($result->isValid(), (string) json_encode($result->error()?->args()).' '.$result->error()?->message());
+    }
+
     public function testWhatIsNotADescriptionIsRefused(): void
     {
         foreach ([

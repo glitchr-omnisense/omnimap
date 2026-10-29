@@ -2,6 +2,8 @@
 
 namespace Omnimap\Snapshot;
 
+use Omnimap\Exception\InvalidArgumentException;
+
 /** The cache in a directory of the server's disk. */
 final class DirectoryStorage implements Storage
 {
@@ -50,7 +52,7 @@ final class DirectoryStorage implements Storage
     private function file(string $path): string
     {
         if (str_contains('/'.$path.'/', '/../')) {
-            throw new \InvalidArgumentException(\sprintf('No ".." in a cache path: "%s".', $path));
+            throw new InvalidArgumentException(\sprintf('No ".." in a cache path: "%s".', $path));
         }
 
         return $this->root.'/'.ltrim($path, '/');

@@ -57,23 +57,21 @@ its output pasted as it came.
 
 ## What is not verified
 
-- The core's JavaScript (`omnimap.js`, `snapshot.js`, `capture.js`) and the Google and Leaflet
-  drivers have no test of their own; only `maplibre.js` was drawn in a browser.
+- The core's JavaScript in a browser: `snapshot.js`'s layout and `data-missing`, and
+  `leaflet.js`'s tile layer, are tested on node's test runner over a stand-in DOM and Leaflet
+  (`docker compose run --rm js`); `omnimap.js`, `capture.js` and the Google driver have no test of
+  their own; only `maplibre.js` was drawn in a browser.
 - Google's live answers (Static Maps, Geocoding, the Maps JavaScript API): no key in the harness.
-- Tile servers other than the OpenStreetMap Foundation's, and 512-pixel tile sources (see the
-  known defect in [Tiles](usage-tiles.md)).
+- Tile servers other than the OpenStreetMap Foundation's; 512-pixel tile sources are tested on
+  tiles drawn by the tests (the numbering of Leaflet's `zoomOffset: -1`), not against a real
+  512-pixel server.
 - The Symfony and Laravel pages of this manual were written from omnibridge's code and its
   `MapTest`s, not run in an application for this manual.
 - The scripts that reach a real service (the second script of [Installation](installation.md),
   the Photon example of [Geocoding](usage-geocoding.md)) were not run.
 
-The known defects found while writing this manual are flagged where the behaviour is described:
-`staticMap` declared without a key or a User-Agent ([index](index.md#providers)), a longitude
-outside -180..180 in a description ([Concepts](concepts.md#latlng)), 512-pixel tiles
-([Images](usage-static.md#tiles-put-together-tilestitcher)), `data-missing` read by nothing
-([The browser](javascript.md#snapshotjs---a-kept-picture)), omnimap/maplibre not wired by the
-bridges ([Symfony](symfony.md#services), [Laravel](laravel.md#bindings)), two exceptions outside
-the family ([Errors](errors.md#outside-the-family)).
+The known defect still open is flagged where the behaviour is described: omnimap/maplibre not
+wired by the bridges ([Symfony](symfony.md#services), [Laravel](laravel.md#bindings)).
 
 ## Responsibility
 

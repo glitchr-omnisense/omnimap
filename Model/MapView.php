@@ -55,14 +55,14 @@ final readonly class MapView implements \JsonSerializable
         return $this->options[$provider] ?? [];
     }
 
-    /** @return array<string, mixed> */
+    /** @return array<string, mixed> the view as a description carries it: every longitude wrapped between -180 and 180 */
     public function toArray(): array
     {
         return [
             'id' => $this->id,
-            'center' => $this->center->toArray(),
+            'center' => $this->center->wrapped()->toArray(),
             'zoom' => $this->zoom,
-            'markers' => array_map(static fn (Marker $marker) => $marker->toArray(), $this->markers),
+            'markers' => array_map(static fn (Marker $marker) => ['position' => $marker->position->wrapped()->toArray()] + $marker->toArray(), $this->markers),
             'controls' => $this->controls,
         ];
     }

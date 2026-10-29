@@ -68,7 +68,7 @@ The whole tree, from `Omnibridge\Symfony\Map\DependencyInjection\Configuration`:
 | `cache.public_size` | int or null | `null` | the largest side of a tile served as WebP, in pixels (none: as kept) |
 | `html.class` | string | `omnimap-snapshot` | the frame's class ([The markup](cache.md#the-markup-maphtml)) |
 | `html.suffix` | string | `_snapshot` | the frame's id suffix |
-| `html.missing` | string | `''` | the frame's `data-missing` (read by nothing today) |
+| `html.missing` | string | `''` | the frame's `data-missing`: the address of the picture `snapshot.js` shows for a missing picture or tile |
 | `routes.tile` | `{path, name}` | `/omnimap/{signature}/{id}.webp`, `omnimap_tile` | a tile (also the `src` the frame carries) |
 | `routes.metadata` | `{path, name}` | `/omnimap/{signature}`, `omnimap_metadata` | a picture's metadata |
 | `routes.export` | `{path, name}` | `/omnimap/{signature}/export`, `omnimap_export` | the capture's post |

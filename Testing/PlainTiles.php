@@ -20,15 +20,15 @@ final class PlainTiles
         return (string) ob_get_clean();
     }
 
-    /** The answer RecordedHttpClient gives for ".../{z}/{x}/{y}.png". */
-    public static function answer(): \Closure
+    /** The answer RecordedHttpClient gives for ".../{z}/{x}/{y}.png": tiles of $size pixels. */
+    public static function answer(int $size = 256): \Closure
     {
-        return static function (string $method, string $url): array {
+        return static function (string $method, string $url) use ($size): array {
             if (!preg_match('~/(\d+)/(\d+)/(\d+)\.png$~', $url, $m)) {
                 return [404, ''];
             }
 
-            return [200, self::png((int) $m[1], (int) $m[2], (int) $m[3]), ['content-type' => ['image/png'], 'cache-control' => ['max-age=91080, stale-while-revalidate=604800, stale-if-error=604800']]];
+            return [200, self::png((int) $m[1], (int) $m[2], (int) $m[3], $size), ['content-type' => ['image/png'], 'cache-control' => ['max-age=91080, stale-while-revalidate=604800, stale-if-error=604800']]];
         };
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Omnimap\Snapshot;
 
+use Omnimap\Exception\NotSupportedException;
 use Omnimap\MapRendererInterface;
 use Omnimap\Model\MapView;
 use Omnimap\Model\Size;
@@ -52,7 +53,7 @@ final class Snapshots
     public function make(MapView $view): Snapshot
     {
         if (null === $this->staticMap) {
-            throw new \LogicException('No static map is configured: the pictures come from the browser (save()).');
+            throw new NotSupportedException('No static map is configured: the pictures come from the browser (save()).');
         }
         $image = $this->staticMap->image($view, $this->size, $this->scale);
 

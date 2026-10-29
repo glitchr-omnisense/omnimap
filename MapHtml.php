@@ -12,7 +12,10 @@ use Omnimap\Snapshot\Snapshot;
  *
  * The picture's markup takes the host's own names where it has older ones
  * to keep (lesringostars: class "google-tilemap", id "myMap_html2canvas",
- * src "/google/{signature}/{id}.webp").
+ * src "/google/{signature}/{id}.webp"). Options: class, suffix (of the
+ * frame's id), src (the tiles' address), missing (the address of a picture
+ * snapshot.js shows over a frame with no picture kept and in place of a
+ * tile that does not load; '' for none).
  */
 final class MapHtml
 {

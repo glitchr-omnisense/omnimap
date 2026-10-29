@@ -20,7 +20,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 final class TestTiles implements MapRendererInterface, StaticMapInterface, TileSourceInterface
 {
-    public function __construct(private readonly HttpClientInterface $http, private readonly ?CacheInterface $cache = null)
+    /** @param int $tileSize 256, or 512 for a source of 512-pixel tiles (2^z a side at z) */
+    public function __construct(private readonly HttpClientInterface $http, private readonly ?CacheInterface $cache = null, private readonly int $tileSize = 256)
     {
     }
 
@@ -71,7 +72,7 @@ final class TestTiles implements MapRendererInterface, StaticMapInterface, TileS
 
     public function tileSize(): int
     {
-        return 256;
+        return $this->tileSize;
     }
 
     public function maxZoom(): int

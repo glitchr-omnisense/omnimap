@@ -68,6 +68,9 @@ then `image(MapView $view, Size $size, int $scale = 1): Image`:
 
 - the scale is kept between 1 and 2; the zoom is the view's plus `scale - 1`, at most the source's
   `maxZoom()`; the image is `$size` x scale pixels, centred on the view's centre;
+- a 512-pixel source (`tileSize()` 512) numbers its tiles as such servers do, 2^z a side at zoom
+  `z` (Leaflet's `zoomOffset: -1`): the tiles of the zoom below are taken (a view at zoom 1 is the
+  one tile `0/0/0`), and at zoom 0 that tile is drawn at half its size;
 - every tile the image covers is listed once; above and below the world (`y` outside the grid) the
   `background` colour shows; east and west the world repeats (`x` taken modulo the grid);
 - tiles found in the PSR-16 cache (key `omnimap.tile.` + SHA-1 of the URL) are not fetched; the
@@ -83,13 +86,6 @@ then `image(MapView $view, Size $size, int $scale = 1): Image`:
   bottom-right corner on a translucent white band with GD's built-in font (`©` written `(c)`,
   other non-ASCII characters dropped);
 - the result is a PNG.
-
-> [!WARNING]
-> Known defect: with a 512-pixel tile source (`tile_size: 512`), the stitcher requests the tiles
-> of the view's zoom laid on a grid half as wide (a view at zoom 1 asks for `1/0/0` only), where
-> a tile server whose 512-pixel tiles follow the usual numbering serves that area at the zoom
-> below (`0/0/0`): the image shows the wrong part of the world. Leaflet's driver is configured the
-> same way (no `zoomOffset`). 256-pixel sources are not affected.
 
 ## Google Static Maps
 

@@ -47,13 +47,14 @@ final class MapPrinter
 
     /**
      * The button that sends the live map's picture to the cache: for whoever
-     * may change the map, when the live map is what they see.
+     * may change the map, when the live map is what they see - no picture
+     * kept (map() shows a kept one to everyone; suppress it first).
      *
      * @param array<string, string> $attributes
      */
     public function exportButton(MapView $view, bool $mayChange, string $url, string $token, string $contents, array $attributes = []): string
     {
-        return $mayChange ? $this->html->button('export', $view->id, $url, $token, $contents, $attributes) : '';
+        return $mayChange && null === $this->snapshots->find($view) ? $this->html->button('export', $view->id, $url, $token, $contents, $attributes) : '';
     }
 
     /**

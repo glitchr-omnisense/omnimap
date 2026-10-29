@@ -144,11 +144,10 @@ cover the frame (the padding of the last row and column outside), widens the gri
 0.25 s fade (none when the image was already in the browser's cache). The frame is marked
 `data-omnimap-initialized="1"`.
 
-> [!WARNING]
-> Known defect: `MapHtml` prints a `data-missing` attribute (the `missing` option, `html.missing`
-> in the bridges), where something is expected to show for a missing picture or tile; nothing in
-> `snapshot.js` reads it. A frame with no picture stays empty, and a tile that fails to load stays
-> transparent.
+`data-missing` (the `missing` option, `html.missing` in the bridges), when not empty, is the
+address of a picture shown for what is not there: over a frame with no picture kept (its
+background, `cover`, centred) and in place of a tile that fails to load. Empty, a frame with no
+picture stays empty and a failed tile transparent.
 
 ## capture.js - sending a picture to the cache
 
@@ -185,7 +184,7 @@ metadata, whose `status` is `OK`.
 | `data-omnimap-mounted` | live map element | `mountAll()` | `mountAll()` |
 | `data-omnimap="snapshot"` | picture frame | `MapHtml::snapshot()` | `initSnapshots()`, `relayout()` |
 | `data-src`, `data-signature`, `data-tilesize`, `data-xtiles`, `data-ytiles`, `width`, `height` | picture frame | `MapHtml::snapshot()` | `layout()` |
-| `data-missing` | picture frame | `MapHtml::snapshot()` | nothing (see the warning above) |
+| `data-missing` | picture frame | `MapHtml::snapshot()` | `snapshot.js`: the picture shown for a missing picture or tile |
 | `data-omnimap-initialized` | picture frame | `snapshot.js` | `snapshot.js` |
 | `data-background-image` | a tile's `span` | `layout()` | removed when the tile loads |
 | `data-omnimap-export`, `data-omnimap-suppress`, `data-omnimap-target`, `data-omnimap-token` | button | `MapHtml::button()` | `bindCapture()` |
