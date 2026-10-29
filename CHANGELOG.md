@@ -4,6 +4,14 @@
 
 ### Fixed
 
+- No key in what omnimap throws. `Static\TileStitcher` put the tile's URL and the HTTP client's
+  message (the URL again) in its `UnreachableException` and `ProviderException`, a key in their
+  query included; `Geocoding\GeocoderPhp` put the PSR-18 client's and geocoder-php's messages,
+  which quote the URL called with its key; each wrapped the client's own exception as its previous,
+  and every trace kept the arguments of the calls under it (the URL, the headers). The addresses and
+  messages now have the key's parameters, the URL's user part and the request's secrets masked as
+  `***` (`Http\Redaction`), the previous is a copy of the client's exception (the same class and
+  code), and no trace of the chain keeps its arguments.
 - `Static\TileStitcher` reads a 512-pixel tile source (`tileSize()` 512) as such servers number
   their tiles, 2^z a side at zoom `z` (Leaflet's `zoomOffset: -1`): a view at zoom `z` takes the
   tiles of `z - 1`, and at zoom 0 the one tile is drawn at half its size. It asked the tiles of the

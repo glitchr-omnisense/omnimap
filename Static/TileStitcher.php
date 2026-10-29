@@ -4,6 +4,7 @@ namespace Omnimap\Static;
 
 use Omnimap\Exception\ProviderException;
 use Omnimap\Exception\UnreachableException;
+use Omnimap\Http\Redaction;
 use Omnimap\Model\Image;
 use Omnimap\Model\MapView;
 use Omnimap\Model\Size;
@@ -122,7 +123,7 @@ final class TileStitcher
             try {
                 $responses[$url] = $this->http->request('GET', $url, ['headers' => $this->tiles->headers()]);
             } catch (HttpException $e) {
-                throw new UnreachableException(\sprintf('%s could not be reached for %s: %s', $this->tiles->getTitle(), $url, $e->getMessage()), 0, $e);
+                throw $this->unreachable($e, $url);
             }
         }
         foreach ($responses as $url => $response) {
@@ -131,13 +132,13 @@ final class TileStitcher
                 $status = $response->getStatusCode();
                 if (200 !== $status) {
                     self::cancel($responses);
-                    throw ProviderException::answered($this->tiles->getTitle(), $url, $status);
+                    throw Redaction::withoutArguments(ProviderException::answered($this->tiles->getTitle(), Redaction::text($url, $this->secrets($url)), $status));
                 }
                 $bytes = $response->getContent();
                 $headers = $response->getHeaders();
             } catch (HttpException $e) {
                 self::cancel($responses);
-                throw new UnreachableException(\sprintf('%s could not be reached for %s: %s', $this->tiles->getTitle(), $url, $e->getMessage()), 0, $e);
+                throw $this->unreachable($e, $url);
             }
             $this->cache?->set(self::key($url), $bytes, self::lifetime($headers['cache-control'][0] ?? ''));
             yield $url => $bytes;
@@ -202,5 +203,23 @@ final class TileStitcher
         foreach ($responses as $response) {
             $response->cancel();
         }
+    }
+
+    /**
+     * Not reached: the tile's address and the client's message with the source's key masked (a
+     * key in the URL's query, a token in its headers), the previous a copy of the client's
+     * exception, no trace keeping the arguments where the headers stood.
+     */
+    private function unreachable(HttpException $e, string $url): UnreachableException
+    {
+        $secrets = $this->secrets($url);
+
+        return Redaction::withoutArguments(new UnreachableException(\sprintf('%s could not be reached for %s: %s', $this->tiles->getTitle(), Redaction::text($url, $secrets), Redaction::text($e->getMessage(), $secrets)), 0, Redaction::copy($e, $secrets)));
+    }
+
+    /** @return list<string> */
+    private function secrets(string $url): array
+    {
+        return Redaction::secrets($url, ['headers' => $this->tiles->headers()]);
     }
 }

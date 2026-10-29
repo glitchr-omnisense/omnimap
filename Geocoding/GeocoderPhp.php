@@ -9,6 +9,7 @@ use Geocoder\Query\GeocodeQuery;
 use Geocoder\Query\ReverseQuery;
 use Omnimap\Exception\ProviderException;
 use Omnimap\Exception\UnreachableException;
+use Omnimap\Http\Redaction;
 use Omnimap\Model\Address;
 use Omnimap\Model\Bounds;
 use Omnimap\Model\LatLng;
@@ -72,9 +73,14 @@ final class GeocoderPhp
         try {
             $locations = $call();
         } catch (\Psr\Http\Client\NetworkExceptionInterface $e) {
-            throw new UnreachableException(\sprintf('%s could not be reached for "%s": %s', $this->provider->getName(), $question, $e->getMessage()), 0, $e);
+            // The request's key (in its query, a header) masked in the message and the previous, a copy; no trace keeps arguments.
+            $request = $e->getRequest();
+            $secrets = Redaction::secrets((string) $request->getUri(), ['headers' => $request->getHeaders()]);
+
+            throw Redaction::withoutArguments(new UnreachableException(\sprintf('%s could not be reached for "%s": %s', $this->provider->getName(), $question, Redaction::text($e->getMessage(), $secrets)), 0, Redaction::copy($e, $secrets)));
         } catch (GeocoderException|\Psr\Http\Client\ClientExceptionInterface $e) {
-            throw new ProviderException(\sprintf('%s could not answer "%s": %s', $this->provider->getName(), $question, $e->getMessage()), 0, $e);
+            // geocoder-php's messages quote the URL called, key included.
+            throw Redaction::withoutArguments(new ProviderException(\sprintf('%s could not answer "%s": %s', $this->provider->getName(), $question, Redaction::text($e->getMessage())), 0, Redaction::copy($e)));
         } catch (\TypeError|\ValueError|\JsonException $e) {
             // geocoder-php's providers read the body as the shape they expect: anything else is an answer, not a bug of the caller's.
             throw new ProviderException(\sprintf('%s answered "%s" with something it could not read: %s', $this->provider->getName(), $question, $e->getMessage()), 0, $e);

@@ -14,7 +14,7 @@ extends the SPL exception that fits, for code that catches those:
 | `InvalidConfigException` | `\InvalidArgumentException` | a provider is not configured or its factory not installed (`Registry`); a required option is missing (`ProviderFactory::create()`); a call needs an option that was not given: Google's `staticUrl()` without a key, an OpenStreetMap tile's `headers()` without a `user_agent` |
 | `NotSupportedException` | `\LogicException` | a provider asked for a contract it does not implement (`Registry::renderer()`, `staticMap()`, `geocoder()`, `tiles()`); a capability declared off, called anyway (no HTTP client, no key for Google or no `user_agent` for OpenStreetMap for an image, no PSR-18 client or key for geocoding, no client for MapLibre's `inspect()`); `Snapshots::make()` with no static map (check `canMake()` first, or call `findOrMake()`); `cache.make: true` in Symfony on a provider that makes no image |
 | `ProviderException` | `\RuntimeException` | the provider answered, and not with what was asked: a status other than 200 (401, 403, 404, 429, 5xx), a body that is not an image where an image was asked (a proxy's HTML page in a 200), geocoder-php's own errors (an error status, a quota, an answer it could not read), a MapLibre style that is not JSON or not a style |
-| `UnreachableException` | `\RuntimeException` | the provider could not be reached: DNS, connection, timeout (Symfony's HTTP client's transport exceptions, PSR-18's `NetworkExceptionInterface`) |
+| `UnreachableException` | `\RuntimeException` | the provider could not be reached: DNS, connection, timeout (Symfony's HTTP client's transport exceptions, PSR-18's `NetworkExceptionInterface`); a copy of the client's exception is the previous one ([no secret in it](#no-secret-in-a-failure)) |
 | `InvalidArgumentException` | `\InvalidArgumentException` | a value no map can hold: a latitude past a pole or not finite, a zoom outside 0..24, a size below one pixel or not `WIDTHxHEIGHT`; a signature that is not `[A-Za-z0-9_-]{1,128}`; a picture GD cannot read; a cache format other than png, jpeg, jpg, webp; a `DirectoryStorage` path holding `..` (`SnapshotStore` never builds one: signatures are checked first) |
 
 The messages name the provider (its title) and what was asked:
@@ -74,6 +74,18 @@ zoom too deep          InvalidArgumentException: A zoom lies between 0 and 24, n
 ```
 
 (run on 2026-10-25 in the [harness](harness.md))
+
+## No secret in a failure
+
+What omnimap throws keeps a key out. An address in a message (a tile's, a style's, a Static Maps
+image's, the one geocoder-php quotes) has its key parameters (`key=`, `api_key=`, `signature=`)
+and a password in its user part masked (`key=***`, `Http\Redaction::text()`), and so does the
+HTTP client's message after it, with every secret of the request (a tile source's `headers()`
+token, a PSR-18 request's headers). The previous exception of an `UnreachableException` - and of
+a geocoder's `ProviderException` - is a copy of the client's (`Redaction::copy()`: the same class
+and code, that message, without the request a PSR-18 exception carried), and no trace of the chain
+keeps its arguments, where the URL and headers stood: a log that writes the whole chain, arguments
+included (`zend.exception_ignore_args` off), holds no key.
 
 ## What to catch
 
