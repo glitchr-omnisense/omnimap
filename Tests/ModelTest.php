@@ -25,6 +25,15 @@ final class ModelTest extends TestCase
         new LatLng(90.5, 0);
     }
 
+    /** A longitude already between -180 and 180 is kept as it is: shifted by 180 and back, 136.06688 came out 136.06687999999997. */
+    public function testALongitudeInRangeIsKeptExactly(): void
+    {
+        self::assertSame(['lat' => 30.58715, 'lng' => 136.06688], (new LatLng(30.58715, 136.06688))->wrapped()->toArray());
+        self::assertSame(['lat' => 34.6937, 'lng' => 135.5023], (new LatLng(34.6937, 135.5023))->wrapped()->toArray());
+        self::assertSame(['lat' => 0.0, 'lng' => -179.99999], (new LatLng(0, -179.99999))->wrapped()->toArray());
+        self::assertSame(['lat' => 30.58715, 'lng' => 136.06688], (new MapView(new LatLng(30.58715, 136.06688), 6))->toArray()['center']);
+    }
+
     public function testBoundsAcrossTheAntimeridian(): void
     {
         $pacific = new Bounds(new LatLng(-10, 170), new LatLng(10, -170));

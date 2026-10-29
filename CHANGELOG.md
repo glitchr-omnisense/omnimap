@@ -4,6 +4,9 @@
 
 ### Fixed
 
+- `LatLng::wrapped()` keeps a longitude already between -180 and 180 as it is: it shifted every
+  one by 180 and back, and `MapView::toArray()` (so each description) gave 136.06687999999997 for
+  136.06688 since the longitudes are wrapped there.
 - No key in what omnimap throws. `Static\TileStitcher` put the tile's URL and the HTTP client's
   message (the URL again) in its `UnreachableException` and `ProviderException`, a key in their
   query included; `Geocoding\GeocoderPhp` put the PSR-18 client's and geocoder-php's messages,

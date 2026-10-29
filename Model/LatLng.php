@@ -31,6 +31,10 @@ final readonly class LatLng implements \JsonSerializable, \Stringable
     /** The same point, its longitude between -180 (included) and 180 (excluded). */
     public function wrapped(): self
     {
+        // Already in range: kept as it is (shifted by 180 and back, a longitude drifts in its last digits).
+        if ($this->lng >= -180.0 && $this->lng < 180.0) {
+            return $this;
+        }
         $lng = fmod($this->lng + 180.0, 360.0);
 
         return new self($this->lat, ($lng < 0 ? $lng + 360.0 : $lng) - 180.0);
