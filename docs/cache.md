@@ -186,7 +186,7 @@ replace the picture of any name.
 | Method | |
 |---|---|
 | `map(MapView $view, bool $mayChange = false): string` | the element, by the rule above |
-| `exportButton(MapView $view, bool $mayChange, string $url, string $token, string $contents, array $attributes = []): string` | the export button when `$mayChange` and no picture is kept (the live map is what they see), else `''` |
+| `exportButton(MapView $view, bool $mayChange, string $url, string $token, string $contents, array $attributes = []): string` | the export button when `$mayChange`, a picture kept or not (the next capture replaces a kept one), else `''` |
 | `suppressButton(...)` (same arguments) | the delete button when `$mayChange` and a picture is kept, else `''` |
 | `signature(MapView $view): string`, `snapshots(): Snapshots` | |
 

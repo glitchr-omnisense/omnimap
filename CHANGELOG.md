@@ -18,8 +18,9 @@
   `\LogicException`), `DirectoryStorage` a path with `..` `Omnimap\Exception\InvalidArgumentException`
   (still an `\InvalidArgumentException`): both were plain SPL exceptions, missed by a
   `catch (OmnimapException)`.
-- `MapPrinter::exportButton()` gives no button when a picture is kept, as its docblock says ("when
-  the live map is what they see"): it gave one whenever `$mayChange`.
+- `MapPrinter::exportButton()`'s docblock says what it does: the button for whoever may change the
+  map, a picture kept or not (the next capture replaces it), where it said "when the live map is
+  what they see".
 
 ### Added
 

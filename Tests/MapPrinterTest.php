@@ -37,7 +37,7 @@ final class MapPrinterTest extends TestCase
         $snapshots->save($snapshots->signature($view), SnapshotStoreTest::png(600, 400));
         self::assertStringContainsString('data-xtiles="2"', $printer->map($view, true), 'a picture: shown to everyone');
         self::assertStringContainsString('data-omnimap-suppress="/s"', $printer->suppressButton($view, true, '/s', 't', 'X'));
-        self::assertSame('', $printer->exportButton($view, true, '/e', 't', 'O'), 'the picture is what they see: nothing to export');
+        self::assertStringContainsString('data-omnimap-export="/e"', $printer->exportButton($view, true, '/e', 't', 'O'), 'a picture kept: the button still, its next capture replaces it');
         $snapshots->delete($snapshots->signature($view));
         @rmdir($dir);
     }
