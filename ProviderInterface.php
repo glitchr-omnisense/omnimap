@@ -7,9 +7,11 @@ namespace Omnimap;
  * say what it can be asked - draw a map in the browser
  * (MapRendererInterface), make an image of one on the server
  * (StaticMapInterface), find places (GeocoderInterface), give tiles
- * (TileSourceInterface) - and what it costs the visitor's privacy.
+ * (TileSourceInterface) -, what it costs the visitor's privacy, and its
+ * usage policy (omnisense/contracts' UsagePolicy: its limits, what its
+ * terms allow and ask).
  */
-interface ProviderInterface
+interface ProviderInterface extends \Omnisense\Contracts\Provider\ProviderInterface
 {
     /** The factory's name: "google", "openstreetmap"... */
     public function getName(): string;

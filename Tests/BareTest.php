@@ -11,14 +11,14 @@ use PHPUnit\Framework\TestCase;
  * makes its picture of tiles, signs it, keeps it in a directory, prints it,
  * deletes it and geocodes - and every class of the package is loaded.
  * Nothing may come from outside the package but what it requires: the PSR
- * cache interface, Symfony's HTTP client contracts (interfaces only) and
- * geocoder-php - no framework, no HTTP client, no Flysystem nor omnidrive (suggested), no
+ * cache interface, Symfony's HTTP client contracts (interfaces only),
+ * omnisense/contracts and geocoder-php - no framework, no HTTP client, no Flysystem nor omnidrive (suggested), no
  * application, even in the harness where they are installed beside it.
  */
 final class BareTest extends TestCase
 {
     private const FOREIGN = '~^(?:Symfony\\\\(?!Contracts\\\\HttpClient\\\\|Polyfill\\\\)|(?:Illuminate|Laravel|Doctrine|Twig|League|GuzzleHttp|Nyholm|Http|Omnidrive|Omnibridge|Base|App)\\\\)~';
-    private const ALLOWED_FILES = '~/vendor/(?:psr/simple-cache|symfony/http-client-contracts|willdurand/geocoder|composer)/|/vendor/autoload\.php$~';
+    private const ALLOWED_FILES = '~/vendor/(?:omnisense/contracts|psr/simple-cache|symfony/http-client-contracts|willdurand/geocoder|composer)/|/vendor/autoload\.php$|^/omnisense/contracts/~';
 
     public function testAViewMadeCachedAndGeocodedByHandLoadsNothingButOmnimapAndWhatItRequires(): void
     {

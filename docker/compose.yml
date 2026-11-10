@@ -9,12 +9,17 @@
 #
 # Providers come from GitHub (branch 1.x) unless their checkout sits under OMNIMAP_PLUGINS (set it
 # to ../.. in .env when this core sits in the workspace beside them): then that checkout is what runs.
+# omnisense/contracts likewise: its checkout under OMNISENSE_CONTRACTS (../../../omnisense-contracts
+# in .env when it sits beside the family's folder), its tests run with the family's; GitHub otherwise.
 name: omnimap-harness
 
 services:
   omnimap:
     build: .
     image: omnisense/omnimap-harness
+    # The image may be another family's harness tagged (PHP 8.4 with GD and Composer): the
+    # entrypoint is named here, not taken from the image.
+    entrypoint: ["/omnimap/core/docker/entrypoint.sh"]
     # One service, no server beside it: Docker's default bridge, no network of its own to create.
     network_mode: bridge
     env_file:
@@ -23,6 +28,7 @@ services:
     volumes:
       - ..:/omnimap/core
       - ${OMNIMAP_PLUGINS:-./plugins}:/omnimap/plugins:ro
+      - ${OMNISENSE_CONTRACTS:-./contracts}:/omnisense/contracts:ro
       - harness:/harness
 
   js:

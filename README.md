@@ -76,6 +76,7 @@ The manual, in `docs/` (one page on the omnisense site):
 - [Configuration reference](docs/configuration.md), [Errors](docs/errors.md)
 - [Testing](docs/testing.md): the fakes, the conformance suite test by test
 - [The harness](docs/harness.md)
+- [Usage policies](docs/policies.md): each provider's terms as data, a site's tightening, the guard
 - [Writing a provider](docs/providers.md)
 - [Verified, and not](docs/verified.md)
 
@@ -104,7 +105,8 @@ The manual, in `docs/` (one page on the omnisense site):
 omnisense/omnimap and its omnimap/* providers are unofficial clients, affiliated with none of
 the services they reach. The MIT licence covers the code only and grants no right to any service
 or its data; whoever runs them complies with each service's terms (named in each provider's
-README and in `Capabilities::$terms`) and obtains what they require.
+README, in its `policy.json` - `Capabilities::policy()`, [docs/policies.md](docs/policies.md)) and
+obtains what they require.
 
 ## Licence
 

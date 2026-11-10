@@ -2,12 +2,32 @@
 
 namespace Omnimap;
 
+use Omnisense\Contracts\Policy\UsagePolicy;
+use Omnisense\Contracts\Provider\CapabilitiesInterface;
+
 /**
- * What a provider is, said before it is asked anything: what it can do, and
- * who it makes the visitor's browser or the server talk to.
+ * What a provider is, said before it is asked anything: what it can do, who
+ * it makes the visitor's browser or the server talk to, and its usage
+ * policy (omnisense/contracts' UsagePolicy): its rate limits, what its
+ * terms allow (caching, storage, commercial use) and ask (attribution, a
+ * key, a User-Agent).
+ *
+ * $terms, written before the policy, stays: read from the policy's
+ * provenance when it is given and $terms is not; a provider that gives
+ * $terms alone gets a policy made of them, its limits unknown
+ * (UsagePolicy::described()).
  */
-final readonly class Capabilities
+final readonly class Capabilities implements CapabilitiesInterface
 {
+    /**
+     * @var list<string>
+     *
+     * @deprecated since 1.x, read policy()->provenance (terms, policy)
+     */
+    public array $terms;
+
+    private UsagePolicy $policy;
+
     /**
      * @param bool         $renderer          it draws a map in the browser (MapRendererInterface)
      * @param bool         $staticMap         it makes an image of a map on the server (StaticMapInterface)
@@ -16,6 +36,7 @@ final readonly class Capabilities
      * @param list<string> $browserHosts      the hosts a visitor's browser reaches when the map is drawn live: what a consent asks about
      * @param bool         $cookies           whether its browser script sets or reads cookies
      * @param list<string> $terms             the terms whoever runs it must follow (URLs)
+     * @param ?UsagePolicy $policy            its usage policy; made of $terms when null
      */
     public function __construct(
         public bool $renderer = false,
@@ -24,8 +45,16 @@ final readonly class Capabilities
         public bool $tiles = false,
         public array $browserHosts = [],
         public bool $cookies = false,
-        public array $terms = [],
+        array $terms = [],
+        ?UsagePolicy $policy = null,
     ) {
+        $this->policy = $policy ?? UsagePolicy::described(UsagePolicy::UNNAMED, null, null, $terms);
+        $this->terms = [] !== $terms || null === $policy ? $terms : array_values(array_unique(array_filter([$policy->provenance->terms, $policy->provenance->policy])));
+    }
+
+    public function policy(): UsagePolicy
+    {
+        return $this->policy;
     }
 
     /** @return list<string> what it can be asked, by contract: renderer, staticMap, geocoder, tiles */

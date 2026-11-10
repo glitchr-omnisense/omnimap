@@ -2,6 +2,30 @@
 
 ## [Unreleased]
 
+### Changed
+
+- omnisense/omnimap on omnisense/contracts, the kernel of the omni families, with usage policies;
+  the public API unchanged. `Config`, `ProviderInterface`, `ProviderFactoryInterface`,
+  `ProviderFactory` (`populate()` and `build()` as before), `Registry` (its messages as before),
+  `Http\Redaction`, `Testing\RecordedHttpClient` and `RecordedResponse` keep their names and
+  their API, each a thin subclass of the kernel's (prefix `omnimap`, omnimap's exceptions);
+  `RecordedHttpClient::stream()` now streams. `OmnimapException` extends the kernel's
+  `ExceptionInterface`.
+
+### Added
+
+- `Capabilities::policy()`: the provider's `UsagePolicy`, given (`policy:`) or made of `$terms`,
+  which stays, deprecated, read from the policy when it is given. `toArray()` unchanged.
+- `Registry::guarded($name, $contract)`: the provider behind its guard (`Policy\GuardedRenderer`,
+  `GuardedStaticMap`, `GuardedGeocoder`, `GuardedTiles`), each call that reaches a server counted
+  against the policy and refused over a limit (`Exception\UsageLimitReachedException`), the call
+  never made. `renderer()`, `staticMap()`, `geocoder()`, `tiles()` and `get()` give the provider
+  itself as before. `Registry::policy()`, `policies()`, `guard()`, `names($contract)`; `policy`
+  and `usage` beside a provider's options; a shared `RateLimiterInterface` as the registry's third
+  argument. [docs/policies.md](docs/policies.md).
+- The harness installs omnisense/contracts from its checkout (`OMNISENSE_CONTRACTS`) or GitHub,
+  runs its tests, and names its entrypoint (the image may be another family's harness tagged).
+
 ### Fixed
 
 - `LatLng::wrapped()` keeps a longitude already between -180 and 180 as it is: it shifted every

@@ -211,7 +211,10 @@ its own `Testing\TestTiles` (`Tests/TestTilesContractTest.php`). Each test and e
   it is given;
 - [ ] errors are `ProviderException` / `UnreachableException`, a capability off
   `NotSupportedException`;
-- [ ] the service's terms are in `terms`, its rate limits and its required User-Agent kept in code;
+- [ ] the service's terms are in `policy.json` (omnisense/contracts' schema, named in `composer.json` as
+      `extra.omnisense.policy`, `verifiedAt` the day they were read, unknown what they do not publish),
+      the provider `implements DeclaresUsagePolicyInterface` and gives it to `Capabilities` (`policy:`);
+      its required User-Agent kept in code;
 - [ ] `docs/index.md`: options, capabilities, behaviour, errors, verified and not
   (CONTRIBUTING.md of omnimap/maplibre is the family's guide to testing, documenting and
   releasing a provider).

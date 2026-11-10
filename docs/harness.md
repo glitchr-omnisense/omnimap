@@ -17,6 +17,10 @@ installation, PHP 8.4 with GD:
 
 Providers come from GitHub (branch 1.x) unless `OMNIMAP_PLUGINS` (in `docker/.env`) points at a
 directory holding their checkouts - `../..` when this core sits in the workspace beside them.
+omnisense/contracts, the kernel, likewise: its checkout under `OMNISENSE_CONTRACTS` (in
+`docker/.env`; `../../../omnisense-contracts` when it sits beside the family's folder), its tests
+run with the family's; a git clone of `https://github.com/glitchr-omnisense/contracts.git`
+otherwise.
 
 ## What it is made of
 
@@ -24,7 +28,7 @@ directory holding their checkouts - `../..` when this core sits in the workspace
 |---|---|
 | `docker/Dockerfile` | `php:8.4-cli` with GD (PNG, JPEG, WebP, FreeType), git, unzip and Composer 2; image `omnisense/omnimap-harness` |
 | `docker/compose.yml` | the service `omnimap`, on Docker's default bridge (no network of its own); mounts the core at `/omnimap/core`, the providers' checkouts read-only at `/omnimap/plugins`, and a volume `harness` at `/harness` (the composed installation and Composer's cache). The service `js` (`node:22-alpine`, no network) runs `node --test` over `Tests/js/*.test.mjs` of the core and of each provider's checkout, the core and the providers mounted read-only |
-| `docker/.env` | `OMNIMAP_PLUGINS=../..`: the checkouts beside the core |
+| `docker/.env` | `OMNIMAP_PLUGINS=../..`: the checkouts beside the core; `OMNISENSE_CONTRACTS`: the kernel's checkout |
 | `docker/harness/plugins.php` | the providers installed beside the core and their tests' namespaces: `google`, `openstreetmap`, `maplibre` |
 | `docker/harness/setup.php` | writes `/harness/composer.json` and `/harness/phpunit.xml`: the core and each provider as path repositories (symlinked) when their checkout is there, else a git clone of `https://github.com/glitchr-omnisense/omnimap-<name>.git`; the dev tools (PHPUnit 11, PHPStan 2, symfony/http-client and cache, nyholm/psr7, Flysystem and its memory adapter, omnidrive, opis/json-schema); one test suite per package; `/harness/packages/<name>` linked to each provider for PHPStan. Files are rewritten only when they change |
 | `docker/entrypoint.sh` | runs `setup.php`, then `composer install` (no `vendor/`) or `composer update` (`composer.json` newer than the lock), then the command |
