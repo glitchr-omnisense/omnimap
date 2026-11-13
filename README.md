@@ -6,6 +6,33 @@ whose picture is kept in a cache of the host's storage; places found from an add
 addresses from a point through [geocoder-php](https://geocoder-php.org). Plain PHP: no framework
 in `require`.
 
+## Installation and a first call
+
+```sh
+composer require omnisense/omnimap omnimap/openstreetmap
+```
+
+OpenStreetMap and MapLibre (OpenFreeMap's style) need no key; Google Maps needs an API key of a Google Cloud
+project. A view described for the browser makes no request on the server:
+
+```php
+require __DIR__.'/vendor/autoload.php';
+
+use Omnimap\MapHtml;
+use Omnimap\Model\{LatLng, MapView, Marker};
+use Omnimap\OpenStreetMap\OpenStreetMapFactory;
+use Omnimap\Registry;
+
+$registry = new Registry([new OpenStreetMapFactory()], [
+    'maps' => ['factory' => 'openstreetmap', 'options' => ['user_agent' => 'MySite/1.0 (+https://example.org)']],
+]);
+$view = new MapView(new LatLng(35.0116, 135.7681), 12, [new Marker(new LatLng(35.0036, 135.7780), 'Gion')], id: 'map');
+
+echo (new MapHtml())->live('map', $registry->renderer('maps')->describe($view)), "\n";   // <div id="map" data-omnimap="map" ...>, drawn by assets/omnimap.js
+```
+
+Its picture made on the server and kept in a cache, and geocoding, call the provider (`symfony/http-client`):
+
 ```php
 use Omnimap\MapHtml;
 use Omnimap\Model\{LatLng, MapView, Marker};

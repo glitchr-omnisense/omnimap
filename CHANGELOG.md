@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-13
+
+The first stable version. It requires `omnisense/contracts` `^1.0` with no stability flag, so `composer require omnisense/omnimap` installs it in a project with Composer's default minimum-stability; the 1.x series follows semantic versioning. A tag `vX.Y.Z` is released by `.github/workflows/release.yml` once the package's CI passes on it.
+
+- The README opens on the install line and a first call that needs no key and makes no request (a view
+  described for the browser, OpenStreetMap), and says which provider needs a key (Google).
+
 ### Changed
 
 - omnisense/omnimap on omnisense/contracts, the kernel of the omni families, with usage policies;
